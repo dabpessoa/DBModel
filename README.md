@@ -1,2 +1,2 @@
 # DBModel
-Modelagem de Bando de Dados. Java.
+Modelagem de Bando de Dados.
