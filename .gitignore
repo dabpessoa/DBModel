@@ -4,7 +4,6 @@
 .settings
 /.settings
 /bin
-README.md
 out
 .idea
 *.iml
