@@ -30,7 +30,7 @@ import javax.swing.JScrollPane;
 import me.dabpessoa.bean.Atributo;
 import me.dabpessoa.bean.IntegritRestriction;
 import me.dabpessoa.bean.Relationship;
-import me.dabpessoa.business.DBModelXMLParser;
+import me.dabpessoa.xml.DBModelXMLParser;
 import me.dabpessoa.core.Controller;
 import me.dabpessoa.gui.components.About;
 import me.dabpessoa.persistence.RelationShipListener;

@@ -29,7 +29,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */ 
 
-package me.dabpessoa.business;
+package me.dabpessoa.xml;
+
+import me.dabpessoa.util.Exstension;
 
 import java.io.File;
 import javax.swing.filechooser.*;
@@ -43,9 +45,9 @@ public class XMLFilter extends FileFilter {
             return true;
         }
 
-        String extension = Utils.getExtension(f);
+        String extension = Exstension.getExtension(f);
         if (extension != null) {
-            if (extension.equals(Utils.xml)) {
+            if (extension.equals(Exstension.xml)) {
                     return true;
             } else {
                 return false;

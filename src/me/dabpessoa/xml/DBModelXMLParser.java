@@ -1,4 +1,4 @@
-package me.dabpessoa.business;
+package me.dabpessoa.xml;
 
 import java.awt.Color;
 import java.util.ArrayList;

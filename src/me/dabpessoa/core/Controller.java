@@ -11,8 +11,8 @@ import javax.swing.JOptionPane;
 
 import me.dabpessoa.bean.Relationship;
 import me.dabpessoa.bean.Tabela;
-import me.dabpessoa.business.DBModelXMLParser;
-import me.dabpessoa.business.XMLFilter;
+import me.dabpessoa.xml.DBModelXMLParser;
+import me.dabpessoa.xml.XMLFilter;
 import me.dabpessoa.dao.BDManager;
 import me.dabpessoa.dao.DataBase;
 import me.dabpessoa.gui.PrincipalUI;

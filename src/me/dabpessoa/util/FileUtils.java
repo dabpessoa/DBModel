@@ -41,7 +41,7 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import me.dabpessoa.business.XMLFilter;
+import me.dabpessoa.xml.XMLFilter;
 
 /**
  * Useful file system level utilities.

@@ -1,4 +1,6 @@
-package me.dabpessoa.core;
+package me.dabpessoa.run;
+
+import me.dabpessoa.core.Controller;
 
 import javax.swing.SwingUtilities;
 
