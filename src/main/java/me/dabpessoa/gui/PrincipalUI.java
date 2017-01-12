@@ -406,8 +406,6 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 			Point point = calculateCoordinates();
 			createNewTableUI(point);
 
-			//teste (Talvez n�o precise)
-			System.out.println("IDD: "+listaTabelas.get(listaTabelas.size()-1).getTabela().getId());
 			this.updateListeners(listaTabelas.get(listaTabelas.size()-1).getTabela(), Controller.ADICIONAR);
 			
 		} else if (command.equalsIgnoreCase("button2")) {
