@@ -1,8 +1,5 @@
 package main.java.me.dabpessoa.business;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,28 +78,18 @@ public class Controller implements TablesListener {
 		if (acao == Controller.ADICIONAR) {
 			
 			Tabela tabela = (Tabela) obj;
-			
-			System.out.println("ENTROU NO ADICIONAR DO CONTROLLER...");
-			System.out.println("ADICIONAR ID: "+tabela.getId());
-			System.out.println("TITULO TESTE: "+tabela.getTitulo());
 			this.addTabela(tabela);
 			
 		} else if (acao == Controller.REMOVER) {
 			
 			Tabela tabela = (Tabela) obj;
-			
-			System.out.println("ENTROU NO REMOVER DO CONTROLLER...");
 			this.removerTabela(tabela);
 			
 		} else if (acao == Controller.EDITAR) {
 			
 			Tabela tabela = (Tabela) obj;
 			
-			System.out.println("ENTROU NO EDITAR DO CONTROLLER...");
-			
 			for (int i = 0 ; i < tabelas.size() ; i++) {
-				System.out.println("TITULO TABELA: "+tabela.getTitulo());
-				System.out.println("ID: "+tabela.getId());
 				if (tabelas.get(i).getId().equalsIgnoreCase(tabela.getId())) {
 					tabelas.remove(i);
 					tabelas.add(tabela);
@@ -113,7 +100,6 @@ public class Controller implements TablesListener {
 		} else if (acao == Controller.RELACAO_TABELAS) {
 			
 			RelationshipUI relationShip = RelationshipUI.getInstance(principalUI.getListaTabelas());
-//			RelationshipUI relationShip = RelationshipUI.getInstance(principalUI.getFrame(), principalUI.getListaTabelas());
 			relationShip.setListener(principalUI);
 			
 			
@@ -139,9 +125,6 @@ public class Controller implements TablesListener {
 			temp.append(sql.GenerateCreateTable(lt).toString());
 			temp.append(sql.GenerateAlterTable(relationships).toString());
 			SqlUI.getInstance(temp).addListener(this);
-//			sqlUI.addListener(this);
-			
-			//GeneratingSQLUI genaratingSQL = new GeneratingSQLUI(principalUI.getListaTabelas());
 			
 			
 		} else if (acao == Controller.ADD_RELATIONSHIP) {
@@ -179,7 +162,7 @@ public class Controller implements TablesListener {
 			
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				
-				xml = this.readConteudo(fc.getSelectedFile().getPath());
+				xml = ResourceManager.readLinesFromTextFile(fc.getSelectedFile().getPath());
 				this.principalUI.readModel(xml);
 				
 			}
@@ -214,42 +197,9 @@ public class Controller implements TablesListener {
 			boolean status = dataBaseManager.createBanco(new StringBuilder(sql));
 			if (!status) JOptionPane.showMessageDialog(this.principalUI.getFrame(), "Comandos DDL executados com sucesso no SGBD configurado!");
 			else JOptionPane.showMessageDialog(this.principalUI.getFrame(), "Falha ao executar comandos!");
-			
-			
-//			JDialog childDialog = new JDialog(this.principalUI.getFrame(), true);
-//			childDialog.setSize(250, 250);
-//			childDialog.setVisible(true);
-//			childDialog.setTitle("Teste");
-			
+
 		}
 		
-	}
-	
-	private StringBuilder readConteudo(String path) {
-
-		StringBuilder conteudo = new StringBuilder();
-		File file = new File(path);
-		
-		if (!file.exists())
-			return null;
-
-		try {
-			FileReader fr;
-			fr = new FileReader(file);
-
-			BufferedReader br = new BufferedReader(fr);
-			String linha = br.readLine();
-			while (linha != null) {
-				conteudo.append(linha).append('\n');
-				linha = br.readLine();
-			}
-			br.close();fr.close();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return conteudo;
 	}
 
 	public void setSqlUI(SqlUI sqlUI) {

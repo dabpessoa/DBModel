@@ -258,93 +258,7 @@ public class TableEditUI extends javax.swing.JFrame implements ActionListener, W
 			e.printStackTrace();
 		}
 	}
-	
-//	 class MyTableModel extends AbstractTableModel {
-//		 
-//		private static final long serialVersionUID = 1L;
-//		
-//		private String[] columnNames = {"Nome do Atributo", "Tipo", "Chave Prim�ria", "Permitir Nulo"};
-//        private Object[][] data = {
-//            {new String(""), new String(""), new Boolean(false), new Boolean(false)}
-//        };
-//
-//        public int getColumnCount() {
-//            return columnNames.length;
-//        }
-//
-//        public int getRowCount() {
-//            return data.length;
-//        }
-//
-//        public String getColumnName(int col) {
-//            return columnNames[col];
-//        }
-//
-//        public Object getValueAt(int row, int col) {
-//            return data[row][col];
-//        }
-//
-//        /*
-//         * JTable uses this method to determine the default renderer/
-//         * editor for each cell.  If we didn't implement this method,
-//         * then the last column would contain text ("true"/"false"),
-//         * rather than a check box.
-//         */
-//        public Class<? extends Object> getColumnClass(int c) {
-//            return getValueAt(0, c).getClass();
-//        }
-//
-//        /*
-//         * Don't need to implement this method unless your table's
-//         * editable.
-//         */
-//        public boolean isCellEditable(int row, int col) {
-//            //Note that the data/cell address is constant,
-//            //no matter where the cell appears onscreen.
-////	            if (col < 2) {
-////	                return false;
-////	            } else {
-////	                return true;
-////	            }
-//        	return true;
-//        }
-//
-//        /*
-//         * Don't need to implement this method unless your table's
-//         * data can change.
-//         */
-//        public void setValueAt(Object value, int row, int col) {
-//            if (DEBUG) {
-//                System.out.println("Setting value at " + row + "," + col
-//                                   + " to " + value
-//                                   + " (an instance of "
-//                                   + value.getClass() + ")");
-//            }
-//
-//            data[row][col] = value;
-//            fireTableCellUpdated(row, col);
-//
-//            if (DEBUG) {
-//                System.out.println("New value of data:");
-//                printDebugData();
-//            }
-//        }
-//
-//        private void printDebugData() {
-//            int numRows = getRowCount();
-//            int numCols = getColumnCount();
-//
-//            for (int i=0; i < numRows; i++) {
-//                System.out.print("    row " + i + ":");
-//                for (int j=0; j < numCols; j++) {
-//                    System.out.print("  " + data[i][j]);
-//                }
-//                System.out.println();
-//            }
-//            System.out.println("--------------------------");
-//        }
-//    }
-	 
+
 	public void personalizarTable() {
 		
 		JComboBox combo = new JComboBox(AttributeDataType.asStringArray());
@@ -496,13 +410,6 @@ public class TableEditUI extends javax.swing.JFrame implements ActionListener, W
 						default: System.out.println("DEFAULT ERROR...");break;
 						}
 
-						
-						/*
-						 * Adicionar verifica��o do preenchimento dos comboboxes!
-						 * Por exemplo: n�o poder� permitir nulo se for chave prim�ria.
-						 */
-						
-
 					}
 					atributos.add(at);
 				}
@@ -548,10 +455,7 @@ public class TableEditUI extends javax.swing.JFrame implements ActionListener, W
 	}
 
 	@Override
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void windowActivated(WindowEvent e) {}
 
 	@Override
 	public void windowClosed(WindowEvent e) {
@@ -559,33 +463,18 @@ public class TableEditUI extends javax.swing.JFrame implements ActionListener, W
 	}
 
 	@Override
-	public void windowClosing(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void windowClosing(WindowEvent e) {}
 
 	@Override
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void windowDeactivated(WindowEvent e) {}
 
 	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void windowDeiconified(WindowEvent e) {}
 
 	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void windowIconified(WindowEvent e) {}
 
 	@Override
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void windowOpened(WindowEvent e) {}
 
 }

@@ -69,5 +69,32 @@ public class Tabela {
 	public String getId() {
 		return id;
 	}
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Tabela)) return false;
+
+		Tabela tabela = (Tabela) o;
+
+		if (id != null ? !id.equals(tabela.id) : tabela.id != null) return false;
+		return !(titulo != null ? !titulo.equals(tabela.titulo) : tabela.titulo != null);
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = id != null ? id.hashCode() : 0;
+		result = 31 * result + (titulo != null ? titulo.hashCode() : 0);
+		return result;
+	}
+
+	@Override
+	public String toString() {
+		return "Tabela{" +
+				"titulo='" + titulo + '\'' +
+				", id='" + id + '\'' +
+				'}';
+	}
+
 }
