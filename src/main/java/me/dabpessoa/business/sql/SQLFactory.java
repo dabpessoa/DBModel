@@ -46,10 +46,10 @@ public class SQLFactory {
 				
 				for (int i = 0; i < t.getAtributos().size(); i++){
 					if(i+1 != t.getAtributos().size()){
-						codigoSQLGerado.append("\t"+t.getAtributos().get(i).getNome()+" "+t.getAtributos().get(i).getTipo().getNome()+",\n");
+						codigoSQLGerado.append("\t"+t.getAtributos().get(i).getNome()+" "+t.getAtributos().get(i).getType().getDescricao()+",\n");
 					}	
 					else{
-						codigoSQLGerado.append("\t"+t.getAtributos().get(i).getNome()+" "+t.getAtributos().get(i).getTipo().getNome()+",\n");
+						codigoSQLGerado.append("\t"+t.getAtributos().get(i).getNome()+" "+t.getAtributos().get(i).getType().getDescricao()+",\n");
 					}
 					
 					if(t.getAtributos().get(i).isChavePrimaria()){

@@ -38,9 +38,11 @@ import main.java.me.dabpessoa.bean.Atributo;
 import main.java.me.dabpessoa.bean.IntegritRestriction;
 import main.java.me.dabpessoa.bean.Tabela;
 import main.java.me.dabpessoa.bean.Tipo;
+import main.java.me.dabpessoa.bean.enums.AttributeDataType;
 import main.java.me.dabpessoa.exception.EmptyColumnException;
 import main.java.me.dabpessoa.business.listeners.EditListener;
 import main.java.me.dabpessoa.util.Constants;
+import org.w3c.dom.Attr;
 
 
 /**
@@ -93,7 +95,7 @@ public class TableEditUI extends javax.swing.JFrame implements ActionListener, W
 			
 			Atributo atrib = tabela.getAtributos().get(i);
 			
-			Object[] o = {atrib.getNome(), atrib.getTipo().getNome(), atrib.isChavePrimaria(), atrib.isRestrictNull(), atrib.isUniqueKey(), atrib.getIntegritRestriction() != null};
+			Object[] o = {atrib.getNome(), atrib.getType().getDescricao(), atrib.isChavePrimaria(), atrib.isRestrictNull(), atrib.isUniqueKey(), atrib.getIntegritRestriction() != null};
 			model.addRow(o);
 		}
 		
@@ -141,7 +143,7 @@ public class TableEditUI extends javax.swing.JFrame implements ActionListener, W
 			}
 			{
 				String titulos[] = {"Nome do Atributo", "Tipo", "Chave Prim�ria", "Permitir Nulo", "Unique", "Foreign Key"};
-				String tipos[] = {"VARCHAR", "INT", "BOOLEAN", "CHAR"};
+				String tipos[] = AttributeDataType.asStringArray();
 				DefaultTableModel tableAtributosModel = new DefaultTableModel(new Object[][] {}, titulos);
 				tableAtributos = new JTable();
 				tableAtributos.setModel(tableAtributosModel);
@@ -161,7 +163,7 @@ public class TableEditUI extends javax.swing.JFrame implements ActionListener, W
 				          }  
 				       }  
 				 });  
-				this.personalizarTable(tipos);
+				this.personalizarTable();
 				{
 					scrollTable = new JScrollPane(tableAtributos);
 				}
@@ -343,9 +345,9 @@ public class TableEditUI extends javax.swing.JFrame implements ActionListener, W
 //        }
 //    }
 	 
-	public void personalizarTable(final String[] tipos) {
+	public void personalizarTable() {
 		
-		JComboBox combo = new JComboBox(tipos);
+		JComboBox combo = new JComboBox(AttributeDataType.asStringArray());
 		combo.setEditable(true);
 		combo.setSelectedIndex(0);
 		combo.setFocusable(true);
@@ -367,34 +369,7 @@ public class TableEditUI extends javax.swing.JFrame implements ActionListener, W
         
         DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
         tableAtributos.getColumnModel().getColumn(1).setCellRenderer(dtcr);
-        
-//        tableAtributos.getColumnModel().getColumn(1).setCellRenderer(new TableCellRenderer() {
-//			
-//	          // the method gives the component  like whome the cell must be rendered
-//	          public Component getTableCellRendererComponent(
-//	    		  JTable table, Object value, boolean isSelected,
-//	    		  boolean isFocused, int row, int col) {
-//	    	  	 
-//	        	  JComboBox cb = new JComboBox(tipos);
-//	        	  cb.setEditable(true);
-//	        	  cb.setSelectedItem(value);
-//	        	  
-////	        	  setSize( tableAtributos.getColumnModel().getColumn(col).getWidth(),  
-////	                      getPreferredSize().height);  
-////	        	  
-////	        	  if (tableAtributos.getRowHeight(row) != getPreferredSize().height)   
-////	        	  {  
-////	        		  tableAtributos.setRowHeight(row, getPreferredSize().height);  
-////	        	  }  
-//	        	  
-//	        	  return cb;
-//	        	  
-//	          }
-//		});
-        
-        
-  
-        
+
         tableAtributos.getColumnModel().getColumn(2).setCellRenderer(new TableCellRenderer() {
 	          // the method gives the component  like whome the cell must be rendered
 	          public Component getTableCellRendererComponent(
@@ -501,9 +476,7 @@ public class TableEditUI extends javax.swing.JFrame implements ActionListener, W
 						switch (j) {
 						case 0: at.setNome(obj+"");break;
 						case 1: {
-							Tipo tipo = new Tipo();
-							tipo.setNome(obj+"");
-							at.setTipo(tipo);
+							at.setType(AttributeDataType.findType(obj+""));
 							break;
 						}
 						case 2: at.setChavePrimaria((Boolean) obj);break;

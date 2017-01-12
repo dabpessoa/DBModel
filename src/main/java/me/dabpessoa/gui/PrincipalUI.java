@@ -477,7 +477,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 					temp1.setIntegritRestriction(fk);
 					temp1.setNome(atrib.getNome());
 					temp1.setRestrictNull(atrib.isRestrictNull());
-					temp1.setTipo(atrib.getTipo());
+					temp1.setType(atrib.getType());
 					temp1.setUniqueKey(atrib.isUniqueKey());
 					
 					atribs.add(temp1);
@@ -494,7 +494,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 					temp1.setIntegritRestriction(fk);
 					temp1.setNome(atrib.getNome());
 					temp1.setRestrictNull(atrib.isRestrictNull());
-					temp1.setTipo(atrib.getTipo());
+					temp1.setType(atrib.getType());
 					temp1.setUniqueKey(atrib.isUniqueKey());
 					
 					atribs.add(temp1);
@@ -540,7 +540,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 					temp.setIntegritRestriction(fk);
 					temp.setNome(atrib.getNome());
 					temp.setRestrictNull(atrib.isRestrictNull());
-					temp.setTipo(atrib.getTipo());
+					temp.setType(atrib.getType());
 					temp.setUniqueKey(atrib.isUniqueKey());
 					
 					atribs.add(temp);
@@ -573,7 +573,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 					temp1.setIntegritRestriction(fk);
 					temp1.setNome(atrib.getNome());
 					temp1.setRestrictNull(atrib.isRestrictNull());
-					temp1.setTipo(atrib.getTipo());
+					temp1.setType(atrib.getType());
 					temp1.setUniqueKey(atrib.isUniqueKey());
 					
 					atribs.add(temp1);
@@ -606,7 +606,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 					temp1.setIntegritRestriction(fk);
 					temp1.setNome(atrib.getNome());
 					temp1.setRestrictNull(atrib.isRestrictNull());
-					temp1.setTipo(atrib.getTipo());
+					temp1.setType(atrib.getType());
 					temp1.setUniqueKey(atrib.isUniqueKey());
 
 					atribs.add(temp1);

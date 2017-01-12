@@ -1,27 +1,19 @@
 package main.java.me.dabpessoa.bean;
 
-public class Atributo {
+import main.java.me.dabpessoa.bean.enums.AttributeDataType;
 
-	public static final String VARCHAR = "varchar";
-	public static final String INT = "int";
-	public static final String DOUBLE = "double";
-	public static final String BIT = "bit";
+public class Atributo {
 	
 	private String nome;
-	private Tipo tipo;
+	private AttributeDataType type;
 	private boolean primaryKey;
 	private boolean importedKey;
 	private boolean exportedKey;
 	private boolean restrictNull;
 	private boolean uniqueKey;
 	private IntegritRestriction integritRestriction;
-	/*
-	 * tem que ser um objeto para poder guardar a informa��o de qual coluna esta referenciando
-	 */
 	
-	public Atributo() {
-		this.integritRestriction = null;
-	}
+	public Atributo() {}
 
 	public String getNome() {
 		return nome;
@@ -30,13 +22,13 @@ public class Atributo {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	public Tipo getTipo() {
-		return tipo;
+
+	public AttributeDataType getType() {
+		return type;
 	}
 
-	public void setTipo(Tipo tipo) {
-		this.tipo = tipo;
+	public void setType(AttributeDataType type) {
+		this.type = type;
 	}
 
 	public boolean isChavePrimaria() {

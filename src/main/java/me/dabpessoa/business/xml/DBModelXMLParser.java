@@ -70,7 +70,7 @@ public class DBModelXMLParser {
 					xml.append(atrib.getNome());
 					xml.append("<name>\n");
 					xml.append("\t\t\t\t\t\t<type>");
-					xml.append(atrib.getTipo().getNome());
+					xml.append(atrib.getType().getDescricao());
 					xml.append("</type>\n");
 					xml.append("\t\t\t\t\t\t<primary-key>");
 					xml.append(atrib.isChavePrimaria()+"");
@@ -78,9 +78,6 @@ public class DBModelXMLParser {
 					xml.append("\t\t\t\t\t\t<nullable>");
 					xml.append(atrib.isRestrictNull()+"");
 					xml.append("</nullable>\n");
-					xml.append("\t\t\t\t\t\t<type-param>");
-					xml.append(atrib.getTipo().getParam());
-					xml.append("</type-param>\n");
 					xml.append("\t\t\t\t\t</attribute>\n");
 					
 					
