@@ -34,6 +34,7 @@ public class ResourceManager {
         }
 
         return conteudo;
+
     }
 
 }

@@ -14,6 +14,7 @@ import javax.swing.LayoutStyle;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import main.java.me.dabpessoa.bean.enums.UserAction;
 import main.java.me.dabpessoa.business.Controller;
 import main.java.me.dabpessoa.business.listeners.TablesListener;
 
@@ -85,7 +86,7 @@ public class SqlUI extends javax.swing.JFrame implements ActionListener {
     	listeners.remove(listener);
     }
     
-    public void updateListeners(Object obj, int acao) {
+    public void updateListeners(Object obj, UserAction acao) {
     	for (int i = 0 ; i < listeners.size() ; i++) {
     		listeners.get(i).updateTables(obj, acao);
     	}
@@ -177,11 +178,11 @@ public class SqlUI extends javax.swing.JFrame implements ActionListener {
 			System.out.println("EXPORTAR");
 			
 			// Avisar ao seu ouvinte (Controller) que vai esportar.
-			this.updateListeners(textAreaSql.getText(), Controller.EXPORT_SQL);
+			this.updateListeners(textAreaSql.getText(), UserAction.EXPORT_SQL);
 			
 		} else if (command.equalsIgnoreCase("criarBanco")) {
 			
-			this.updateListeners(textAreaSql.getText(), Controller.CRIAR_BANCO);
+			this.updateListeners(textAreaSql.getText(), UserAction.CRIAR_BANCO);
 			
 		}
 		

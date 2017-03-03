@@ -142,7 +142,7 @@ public class TableEditUI extends javax.swing.JFrame implements ActionListener, W
 				tableName.setText("Nome da Tabela: ");
 			}
 			{
-				String titulos[] = {"Nome do Atributo", "Tipo", "Chave Prim�ria", "Permitir Nulo", "Unique", "Foreign Key"};
+				String titulos[] = {"Nome do Atributo", "Tipo", "Chave Primária", "Permitir Nulo", "Unique", "Foreign Key"};
 				String tipos[] = AttributeDataType.asStringArray();
 				DefaultTableModel tableAtributosModel = new DefaultTableModel(new Object[][] {}, titulos);
 				tableAtributos = new JTable();
@@ -218,7 +218,7 @@ public class TableEditUI extends javax.swing.JFrame implements ActionListener, W
 				Image im = redimensiona("src"+File.separator+"main"+File.separator+"resources"+File.separator+"images"+File.separator+"save.png", 18, 18);
 				ImageIcon imgSave = new ImageIcon(im);
 				save.setIcon(imgSave);
-				save.setText("Salvar Altera��es");
+				save.setText("Salvar Alterações");
 				save.setActionCommand("save");
 				save.addActionListener(this);
 			}

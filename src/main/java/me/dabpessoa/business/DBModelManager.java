@@ -2,6 +2,7 @@ package main.java.me.dabpessoa.business;
 
 import main.java.me.dabpessoa.bean.Relationship;
 import main.java.me.dabpessoa.bean.Tabela;
+import main.java.me.dabpessoa.dao.DataBaseManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,21 +16,22 @@ public class DBModelManager {
 
     private List<Tabela> tabelas;
     private List<Relationship> relationships;
+    private DataBaseManager dataBaseManager;
 
     public DBModelManager() {
         this.tabelas = new ArrayList<Tabela>();
         this.relationships = new ArrayList<Relationship>();
     }
 
-    public void addTable(Tabela tabela) {
+    public void addTabela(Tabela tabela) {
         tabelas.add(tabela);
     }
 
-    public void removeTable(Tabela tabela) {
+    public void removerTabela(Tabela tabela) {
         tabelas.remove(tabela);
     }
 
-    public boolean existsTable(Tabela tabela) {
+    public boolean existeTabela(Tabela tabela) {
         return tabelas.contains(tabela);
     }
 
@@ -39,6 +41,22 @@ public class DBModelManager {
 
     public void setTabelas(List<Tabela> tabelas) {
         this.tabelas = tabelas;
+    }
+
+    public DataBaseManager getDataBaseManager() {
+        return dataBaseManager;
+    }
+
+    public void setDataBaseManager(DataBaseManager dataBaseManager) {
+        this.dataBaseManager = dataBaseManager;
+    }
+
+    public List<Relationship> getRelationships() {
+        return relationships;
+    }
+
+    public void setRelationships(List<Relationship> relationships) {
+        this.relationships = relationships;
     }
 
 }

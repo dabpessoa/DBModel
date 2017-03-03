@@ -6,7 +6,7 @@ import javax.swing.SwingUtilities;
 
 /**
  * 
- * Classe Respons�vel por inicializar a aplica��o.
+ * Classe Responsável por inicializar a aplicação.
  * 
  * @author Diego Augusto
  * @since 29.05.2010

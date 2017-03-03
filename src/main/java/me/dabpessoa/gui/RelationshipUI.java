@@ -127,7 +127,7 @@ public class RelationshipUI extends javax.swing.JFrame implements ActionListener
 			{
 				primaryKeyTable = new JLabel();
 				getContentPane().add(primaryKeyTable);
-				primaryKeyTable.setText("Tabela com chave prim�ria:");
+				primaryKeyTable.setText("Tabela com chave primária:");
 				primaryKeyTable.setBounds(12, 42, 245, 14);
 			}
 			{
@@ -162,7 +162,7 @@ public class RelationshipUI extends javax.swing.JFrame implements ActionListener
 				comboForeignTable.setActionCommand("comboForeignTable");
 			}
 			{
-				String[] titulos = {"Chave Primaria"};
+				String[] titulos = {"Chave Primária"};
 				TableModel jTable1Model = new DefaultTableModel(new Object[][] {}, titulos);
 				jTable1 = new JTable();
 				jTable1.setModel(jTable1Model);

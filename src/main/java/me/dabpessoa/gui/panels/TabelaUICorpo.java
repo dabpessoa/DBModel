@@ -1,4 +1,4 @@
-package main.java.me.dabpessoa.gui.components;
+package main.java.me.dabpessoa.gui.panels;
 
 import java.awt.Color;
 import java.awt.Graphics;

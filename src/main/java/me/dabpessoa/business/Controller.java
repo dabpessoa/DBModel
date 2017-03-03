@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 
 import main.java.me.dabpessoa.bean.Relationship;
 import main.java.me.dabpessoa.bean.Tabela;
+import main.java.me.dabpessoa.bean.enums.UserAction;
 import main.java.me.dabpessoa.business.xml.DBModelXMLParser;
 import main.java.me.dabpessoa.business.xml.XMLFilter;
 import main.java.me.dabpessoa.dao.DataBaseManager;
@@ -22,17 +23,6 @@ import main.java.me.dabpessoa.util.FileUtils;
 
 public class Controller implements TablesListener {
 
-	public static final int ADICIONAR = 1;
-	public static final int REMOVER = 2;
-	public static final int EDITAR = 3;
-	public static final int RELACAO_TABELAS = 4;
-	public static final int GERAR_SQL = 5;
-	public static final int ADD_RELATIONSHIP = 6;
-	public static final int SALVAR_MODELO = 7;
-	public static final int CARREGAR_MODELO = 8;
-	public static final int EXPORT_SQL = 9;
-	public static final int CRIAR_BANCO = 10;
-	
 	private List<Tabela> tabelas;
 	private List<Relationship> relationships;
 	private PrincipalUI principalUI;
@@ -73,19 +63,19 @@ public class Controller implements TablesListener {
 	}
 
 	@Override
-	public void updateTables(Object obj, int acao) {
+	public void updateTables(Object obj, UserAction acao) {
 		
-		if (acao == Controller.ADICIONAR) {
+		if (acao == UserAction.ADICIONAR) {
 			
 			Tabela tabela = (Tabela) obj;
 			this.addTabela(tabela);
 			
-		} else if (acao == Controller.REMOVER) {
+		} else if (acao == UserAction.REMOVER) {
 			
 			Tabela tabela = (Tabela) obj;
 			this.removerTabela(tabela);
 			
-		} else if (acao == Controller.EDITAR) {
+		} else if (acao == UserAction.EDITAR) {
 			
 			Tabela tabela = (Tabela) obj;
 			
@@ -97,13 +87,13 @@ public class Controller implements TablesListener {
 			}
 			
 			
-		} else if (acao == Controller.RELACAO_TABELAS) {
+		} else if (acao == UserAction.RELACAO_TABELAS) {
 			
 			RelationshipUI relationShip = RelationshipUI.getInstance(principalUI.getListaTabelas());
 			relationShip.setListener(principalUI);
 			
 			
-		} else if (acao == Controller.GERAR_SQL) {
+		} else if (acao == UserAction.GERAR_SQL) {
 			
 			for (int i = 0 ; i < tabelas.size() ; i++) {
 				System.out.println("TITULO: "+tabelas.get(i).getTitulo());
@@ -127,7 +117,7 @@ public class Controller implements TablesListener {
 			SqlUI.getInstance(temp).addListener(this);
 			
 			
-		} else if (acao == Controller.ADD_RELATIONSHIP) {
+		} else if (acao == UserAction.ADD_RELATIONSHIP) {
 			
 			
 			
@@ -140,7 +130,7 @@ public class Controller implements TablesListener {
 			
 			this.relationships.add(rs);
 			
-		} else if (acao == Controller.SALVAR_MODELO) {
+		} else if (acao == UserAction.SALVAR_MODELO) {
 			
 			DBModelXMLParser parser = new DBModelXMLParser(principalUI.getListaTabelas(), relationships);
 			System.out.println(parser.generateXML().toString());
@@ -148,7 +138,7 @@ public class Controller implements TablesListener {
 			String extensions[] = {".xml"};
 			FileUtils.createFileChooser(this.principalUI.getFrame(), "Salvar Modelo", extensions, parser.generateXML().toString());
 						
-		} else if (acao == Controller.CARREGAR_MODELO) {
+		} else if (acao == UserAction.CARREGAR_MODELO) {
 			
 			// passar arquivo carregado para PrincipalUI
 			
@@ -167,7 +157,7 @@ public class Controller implements TablesListener {
 				
 			}
 			
-		} else if (acao == Controller.EXPORT_SQL){
+		} else if (acao == UserAction.EXPORT_SQL){
 			
 			
 			/*
@@ -181,7 +171,7 @@ public class Controller implements TablesListener {
 			String[] extensions = {".sql"};
 			FileUtils.createFileChooser(this.principalUI.getFrame(), "Gerar SQL", extensions, sql);
 			
-		} else if (acao == Controller.CRIAR_BANCO) {
+		} else if (acao == UserAction.CRIAR_BANCO) {
 			
 			String sql = (String) obj;
 			

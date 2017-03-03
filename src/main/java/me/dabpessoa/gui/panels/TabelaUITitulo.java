@@ -1,4 +1,4 @@
-package main.java.me.dabpessoa.gui.components;
+package main.java.me.dabpessoa.gui.panels;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -10,7 +10,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import main.java.me.dabpessoa.util.ImageUtils;
 import main.java.me.dabpessoa.util.ImageUtils;
 
 public class TabelaUITitulo extends JPanel {

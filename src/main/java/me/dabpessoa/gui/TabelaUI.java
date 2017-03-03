@@ -28,12 +28,12 @@ import javax.swing.WindowConstants;
 
 import main.java.me.dabpessoa.bean.Atributo;
 import main.java.me.dabpessoa.bean.Tabela;
-import main.java.me.dabpessoa.business.Controller;
-import main.java.me.dabpessoa.gui.components.TabelaUICorpo;
-import main.java.me.dabpessoa.gui.components.TabelaUIFKs;
-import main.java.me.dabpessoa.gui.components.TabelaUINKs;
-import main.java.me.dabpessoa.gui.components.TabelaUIPKs;
-import main.java.me.dabpessoa.gui.components.TabelaUITitulo;
+import main.java.me.dabpessoa.bean.enums.UserAction;
+import main.java.me.dabpessoa.gui.panels.TabelaUICorpo;
+import main.java.me.dabpessoa.gui.panels.TabelaUIFKs;
+import main.java.me.dabpessoa.gui.panels.TabelaUINKs;
+import main.java.me.dabpessoa.gui.panels.TabelaUIPKs;
+import main.java.me.dabpessoa.gui.panels.TabelaUITitulo;
 import main.java.me.dabpessoa.business.listeners.EditListener;
 import main.java.me.dabpessoa.util.Constants;
 import main.java.me.dabpessoa.util.ImageUtils;
@@ -91,7 +91,6 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 			titulo = new TabelaUITitulo(new ImageIcon(fundo).getImage());
 			titulo.addMouseListener(this);
 			titulo.addMouseMotionListener(this);
-			this.setTitle("Tabela_"+((PrincipalUI.count)+1));
 			
 			c.gridx = 0;
 			c.gridy = 0;
@@ -191,11 +190,8 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 					
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						// TODO Auto-generated method stub
-						
 						TableEditUI tableEdit = TableEditUI.getInstance(tabela);
 						tableEdit.setListener(t);
-						
 					}
 				});
 	  
@@ -304,8 +300,8 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 	public void updateTable(Tabela tabela) {
 		tabela.setId(this.tabela.getId());
 		/*
-		 *  Aqui j� tenho o objeto tabela preenchido, s� falta ent�o
-		 *  coloc�-lo dentro do panel e atualizar este panel.
+		 *  Aqui jé tenho o objeto tabela preenchido, só falta então
+		 *  colocá-lo dentro do panel e atualizar este panel.
 		 */
 		
 		ImageIcon iconT = new ImageIcon(ImageUtils.redimensiona("src"+File.separator+"main"+File.separator+"resources"+File.separator+"images"+File.separator+"titulo1.png", 16, 16));
@@ -346,7 +342,7 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 		corpoNK.updateUI();
 		
 		this.tabela = tabela;
-		this.principalUI.updateListeners(tabela, Controller.EDITAR);
+		this.principalUI.updateListeners(tabela, UserAction.EDITAR);
 		
 		System.out.println("TabelaUI OK..");
 		
@@ -359,8 +355,7 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 		if (tabela.getTitulo() != null && tabela.getTitulo().length() != 0) {
 			titulo.remove(0);
 		}
-		
-//		ImageIcon icon2 = ImageUtils.createImageIcon(this, "../resources/titulo1.png", "Tabela");
+
 		ImageIcon icon = new ImageIcon(ImageUtils.redimensiona("src"+File.separator+"main"+File.separator+"resources"+File.separator+"images"+File.separator+"titulo1.png", 16, 16));
 		JLabel label = new JLabel(t, icon, JLabel.LEFT);
 		titulo.add(label);
