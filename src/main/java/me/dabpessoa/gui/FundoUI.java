@@ -23,9 +23,7 @@ public class FundoUI extends JPanel {
 		return instance;
 	}
 	
-	private FundoUI() {
-		// TODO Auto-generated constructor stub
-	}
+	private FundoUI() {}
 	
 	public void addCardinalidade(String cardinalidade) {
 		this.cardinalidades.add(cardinalidade);
@@ -49,7 +47,6 @@ public class FundoUI extends JPanel {
 	
 	@Override
 	protected void paintComponent(Graphics g) {
-		// TODO Auto-generated method stub
 		super.paintComponent(g);
 		repaintAll(g);
 	}

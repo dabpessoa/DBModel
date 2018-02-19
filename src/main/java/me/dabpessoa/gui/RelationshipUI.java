@@ -37,13 +37,8 @@ public class RelationshipUI extends javax.swing.JFrame implements ActionListener
 		super();
 	}
 	
-//	private RelationshipUI(JFrame dad, boolean modal) {
-//		super(dad, modal);
-//	}
-	
 	public static RelationshipUI getInstance(List<TabelaUI> listaTabelas) {
 		if (instance == null) {
-//			instance = new RelationshipUI(dad, true);
 			instance = new RelationshipUI();
 			instance.setListaTabelasSingleton(listaTabelas);
 			instance.init();
@@ -99,7 +94,7 @@ public class RelationshipUI extends javax.swing.JFrame implements ActionListener
 			{
 				primaryKeyTable = new JLabel();
 				getContentPane().add(primaryKeyTable);
-				primaryKeyTable.setText("Tabela com chave prim�ria:");
+				primaryKeyTable.setText("Tabela com chave primária:");
 				primaryKeyTable.setBounds(12, 42, 245, 14);
 			}
 			{
@@ -235,8 +230,7 @@ public class RelationshipUI extends javax.swing.JFrame implements ActionListener
 		
 		DefaultTableModel model = (DefaultTableModel) jTable.getModel();
         Object[] o = {comboAtributos.getItemAt(0)};
-//      if (model.getRowCount() > 0)
-//	    model.removeRow(0);
+
         model.addRow(o);
 		
 		TableColumn includeColumn1 = jTable.getColumnModel().getColumn(0);
@@ -276,81 +270,44 @@ public class RelationshipUI extends javax.swing.JFrame implements ActionListener
 	}
 
 	@Override
-	public void windowActivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void windowActivated(WindowEvent e) {}
 
 	@Override
-	public void windowClosed(WindowEvent arg0) {
+	public void windowClosed(WindowEvent e) {
 		instance = null;
 	}
 
 	@Override
-	public void windowClosing(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void windowClosing(WindowEvent e) {}
 
 	@Override
-	public void windowDeactivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void windowDeactivated(WindowEvent e) {}
 
 	@Override
-	public void windowDeiconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void windowDeiconified(WindowEvent e) {}
 
 	@Override
-	public void windowIconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void windowIconified(WindowEvent e) {}
 
 	@Override
-	public void windowOpened(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void windowOpened(WindowEvent e) {}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
-//		if (e.getSource() == scrollTable1) {
-			criarLinhasTable(jTable1, comboPrimaryTable, primaryTableCombo, getTipos1());
-//		}
-		
-//		if (e.getSource() == scrollTable2) {
-			criarLinhasTable(jTable2, comboForeignTable, foreignTableCombo, getTipos2());
-//		}
-		
+		criarLinhasTable(jTable1, comboPrimaryTable, primaryTableCombo, getTipos1());
+		criarLinhasTable(jTable2, comboForeignTable, foreignTableCombo, getTipos2());
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseExited(MouseEvent e) {}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mousePressed(MouseEvent e) {}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseReleased(MouseEvent e) {}
 
 }

@@ -28,6 +28,7 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 	private TabelaUINKs corpoNK;
 	private TabelaUICorpo corpo;
 	private PrincipalUI principalUI;
+	private Point mousePressedPosition;
 	
 	/**
 	* Auto-generated main method to display this 
@@ -142,6 +143,7 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
+
 		if (e.getClickCount() == 2) {
 			TableEditUI tableEdit = TableEditUI.getInstance(tabela);
 			tableEdit.setListener(this);
@@ -204,7 +206,7 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		((JPanel)getParent()).setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 3));
+		((JPanel)getParent()).setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 	}
 
 	@Override
@@ -213,7 +215,12 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
+	public void mousePressed(MouseEvent e) {
+
+		// Marcando a posição do mouse no momento do click.
+		if (mousePressedPosition == null) mousePressedPosition = new Point(e.getX(), e.getY());
+		mousePressedPosition.setLocation(e.getX(), e.getY());
+
 		getParent().getParent().setComponentZOrder(getParent(), 0);
 	}
 
@@ -263,19 +270,6 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 		}
 		
 		((JPanel)getParent()).repaint();
-		
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		getParent().setLocation(e.getX() + getParent().getX(), e.getY() + getParent().getY());
-		FundoUI temp = (FundoUI) getParent().getParent();
-		temp.updateUI();
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -423,6 +417,21 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 
 	public void setCorpo(TabelaUICorpo corpo) {
 		this.corpo = corpo;
-	}	
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+
+		int mouseOffsetX = Math.abs((int) (mousePressedPosition.getX() - getParent().getX()));
+		int mouseOffsetY = Math.abs((int) (mousePressedPosition.getY() - getParent().getY()));
+
+		getParent().setLocation(e.getX() + mouseOffsetX, e.getY() + mouseOffsetY);
+		FundoUI temp = (FundoUI) getParent().getParent();
+		temp.updateUI();
+
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {}
 	
 }
