@@ -68,7 +68,7 @@ public class DBModelXMLParser {
 					xml.append(atrib.getNome());
 					xml.append("<name>\n");
 					xml.append("\t\t\t\t\t\t<type>");
-					xml.append(atrib.getType().getDescricao());
+					xml.append(atrib.getTipo().getDescricao());
 					xml.append("</type>\n");
 					xml.append("\t\t\t\t\t\t<primary-key>");
 					xml.append(atrib.isChavePrimaria()+"");

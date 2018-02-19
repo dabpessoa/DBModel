@@ -88,7 +88,7 @@ public class RelationshipUI extends javax.swing.JFrame implements ActionListener
 			{
 				relationshipName = new JLabel();
 				getContentPane().add(relationshipName);
-				relationshipName.setText("Nome da Rela��o:");
+				relationshipName.setText("Nome da Relação:");
 				relationshipName.setBounds(12, 12, 118, 14);
 			}
 			{

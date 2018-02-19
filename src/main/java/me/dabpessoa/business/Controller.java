@@ -2,7 +2,7 @@ package me.dabpessoa.business;
 
 import me.dabpessoa.bean.Relationship;
 import me.dabpessoa.bean.Tabela;
-import me.dabpessoa.business.listeners.TablesListener;
+import me.dabpessoa.business.listeners.ControllerListener;
 import me.dabpessoa.business.sql.SQLFactory;
 import me.dabpessoa.business.xml.DBModelXMLParser;
 import me.dabpessoa.business.xml.XMLFilter;
@@ -18,7 +18,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Controller implements TablesListener {
+public class Controller implements ControllerListener {
 
 	public static final int ADICIONAR = 1;
 	public static final int REMOVER = 2;
@@ -51,7 +51,7 @@ public class Controller implements TablesListener {
 	public void run() {
 		principalUI = new PrincipalUI();
 		principalUI.createAndShowGUI();
-		principalUI.addListener(this);
+		principalUI.addTableListener(this);
 	}
 	
 	public void addTabela(Tabela tabela) {
@@ -71,7 +71,7 @@ public class Controller implements TablesListener {
 	}
 
 	@Override
-	public void updateTables(Object obj, int acao) {
+	public void doAction(Object obj, int acao) {
 		
 		if (acao == Controller.ADICIONAR) {
 			

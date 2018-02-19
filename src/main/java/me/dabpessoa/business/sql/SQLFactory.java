@@ -1,7 +1,7 @@
 package me.dabpessoa.business.sql;
 
 import me.dabpessoa.bean.Atributo;
-import me.dabpessoa.bean.IntegritRestriction;
+import me.dabpessoa.bean.RestricaoIntegridade;
 import me.dabpessoa.bean.Relationship;
 import me.dabpessoa.bean.Tabela;
 
@@ -46,10 +46,10 @@ public class SQLFactory {
 				
 				for (int i = 0; i < t.getAtributos().size(); i++){
 					if(i+1 != t.getAtributos().size()){
-						codigoSQLGerado.append("\t"+t.getAtributos().get(i).getNome()+" "+t.getAtributos().get(i).getType().getDescricao()+",\n");
+						codigoSQLGerado.append("\t"+t.getAtributos().get(i).getNome()+" "+t.getAtributos().get(i).getTipo().getDescricao()+",\n");
 					}	
 					else{
-						codigoSQLGerado.append("\t"+t.getAtributos().get(i).getNome()+" "+t.getAtributos().get(i).getType().getDescricao()+",\n");
+						codigoSQLGerado.append("\t"+t.getAtributos().get(i).getNome()+" "+t.getAtributos().get(i).getTipo().getDescricao()+",\n");
 					}
 					
 					if(t.getAtributos().get(i).isChavePrimaria()){
@@ -84,7 +84,7 @@ public class SQLFactory {
 			List<Atributo> atribs2 = r.getRightTable().getAtributos();
 			
 			for (int j = 0 ; j < atribs1.size() ; j++) {
-				IntegritRestriction fk = atribs1.get(j).getIntegritRestriction();
+				RestricaoIntegridade fk = atribs1.get(j).getIntegritRestriction();
 				if ( fk != null ) {
 					codigoSQLGerado.append("ALTER TABLE "+r.getLeftTable().getTitulo()+" ADD CONSTRAINT FK_"+atribs1.get(j).getNome()+" FOREIGN KEY ("+atribs1.get(j).getNome()+") REFERENCES "+fk.getTabelaNomeFK()+" ("+fk.getAtributoFK()+");\n ");
 				}
@@ -92,7 +92,7 @@ public class SQLFactory {
 			}
 			
 			for (int j = 0 ; j < atribs2.size() ; j++) {
-				IntegritRestriction fk = atribs2.get(j).getIntegritRestriction();
+				RestricaoIntegridade fk = atribs2.get(j).getIntegritRestriction();
 				if ( fk != null ) {
 					codigoSQLGerado.append("ALTER TABLE "+r.getRightTable().getTitulo()+" ADD CONSTRAINT FK_"+atribs2.get(j).getNome()+" FOREIGN KEY ("+atribs2.get(j).getNome()+") REFERENCES "+fk.getTabelaNomeFK()+" ("+fk.getAtributoFK()+");\n ");
 				}

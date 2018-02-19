@@ -1,17 +1,17 @@
 package me.dabpessoa.bean;
 
-import me.dabpessoa.bean.enums.AttributeDataType;
+import me.dabpessoa.bean.enums.TipoAtributo;
 
 public class Atributo {
 	
 	private String nome;
-	private AttributeDataType type;
+	private TipoAtributo tipo;
 	private boolean primaryKey;
 	private boolean importedKey;
 	private boolean exportedKey;
 	private boolean restrictNull;
 	private boolean uniqueKey;
-	private IntegritRestriction integritRestriction;
+	private RestricaoIntegridade integritRestriction;
 	
 	public Atributo() {}
 
@@ -23,12 +23,12 @@ public class Atributo {
 		this.nome = nome;
 	}
 
-	public AttributeDataType getType() {
-		return type;
+	public TipoAtributo getTipo() {
+		return tipo;
 	}
 
-	public void setType(AttributeDataType type) {
-		this.type = type;
+	public void setTipo(TipoAtributo tipo) {
+		this.tipo = tipo;
 	}
 
 	public boolean isChavePrimaria() {
@@ -47,11 +47,11 @@ public class Atributo {
 		return restrictNull;
 	}
 	
-	public IntegritRestriction getIntegritRestriction() {
+	public RestricaoIntegridade getIntegritRestriction() {
 		return integritRestriction;
 	}
 	
-	public void setIntegritRestriction(IntegritRestriction integritRestriction) {
+	public void setIntegritRestriction(RestricaoIntegridade integritRestriction) {
 		this.integritRestriction = integritRestriction;
 	}
 

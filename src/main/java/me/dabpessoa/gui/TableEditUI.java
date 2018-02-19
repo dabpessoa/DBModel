@@ -1,9 +1,9 @@
 package me.dabpessoa.gui;
 
 import me.dabpessoa.bean.Atributo;
-import me.dabpessoa.bean.IntegritRestriction;
+import me.dabpessoa.bean.RestricaoIntegridade;
 import me.dabpessoa.bean.Tabela;
-import me.dabpessoa.bean.enums.AttributeDataType;
+import me.dabpessoa.bean.enums.TipoAtributo;
 import me.dabpessoa.business.listeners.EditListener;
 import me.dabpessoa.exception.EmptyColumnException;
 import me.dabpessoa.util.Constants;
@@ -66,7 +66,7 @@ public class TableEditUI extends javax.swing.JFrame implements ActionListener, W
 			
 			Atributo atrib = tabela.getAtributos().get(i);
 			
-			Object[] o = {atrib.getNome(), atrib.getType().getDescricao(), atrib.isChavePrimaria(), atrib.isRestrictNull(), atrib.isUniqueKey(), atrib.getIntegritRestriction() != null};
+			Object[] o = {atrib.getNome(), atrib.getTipo().getDescricao(), atrib.isChavePrimaria(), atrib.isRestrictNull(), atrib.isUniqueKey(), atrib.getIntegritRestriction() != null};
 			model.addRow(o);
 		}
 		
@@ -114,7 +114,7 @@ public class TableEditUI extends javax.swing.JFrame implements ActionListener, W
 			}
 			{
 				String titulos[] = {"Nome do Atributo", "Tipo", "Chave Prim�ria", "Permitir Nulo", "Unique", "Foreign Key"};
-				String tipos[] = AttributeDataType.asStringArray();
+				String tipos[] = TipoAtributo.asStringArray();
 				DefaultTableModel tableAtributosModel = new DefaultTableModel(new Object[][] {}, titulos);
 				tableAtributos = new JTable();
 				tableAtributos.setModel(tableAtributosModel);
@@ -232,7 +232,7 @@ public class TableEditUI extends javax.swing.JFrame implements ActionListener, W
 
 	public void personalizarTable() {
 		
-		JComboBox combo = new JComboBox(AttributeDataType.asStringArray());
+		JComboBox combo = new JComboBox(TipoAtributo.asStringArray());
 		combo.setEditable(true);
 		combo.setSelectedIndex(0);
 		combo.setFocusable(true);
@@ -361,7 +361,7 @@ public class TableEditUI extends javax.swing.JFrame implements ActionListener, W
 						switch (j) {
 						case 0: at.setNome(obj+"");break;
 						case 1: {
-							at.setType(AttributeDataType.findType(obj+""));
+							at.setTipo(TipoAtributo.findType(obj+""));
 							break;
 						}
 						case 2: at.setChavePrimaria((Boolean) obj);break;
@@ -369,8 +369,8 @@ public class TableEditUI extends javax.swing.JFrame implements ActionListener, W
 						case 4: at.setUniqueKey((Boolean) obj); break;
 						case 5: {
 							
-							IntegritRestriction fk = null;
-							if ((Boolean) obj) fk = new IntegritRestriction();
+							RestricaoIntegridade fk = null;
+							if ((Boolean) obj) fk = new RestricaoIntegridade();
 							else fk = null;
 							
 							at.setIntegritRestriction(fk); 

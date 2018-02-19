@@ -1,11 +1,11 @@
 package me.dabpessoa.gui;
 
 import me.dabpessoa.bean.Atributo;
-import me.dabpessoa.bean.IntegritRestriction;
 import me.dabpessoa.bean.Relationship;
+import me.dabpessoa.bean.RestricaoIntegridade;
 import me.dabpessoa.business.Controller;
+import me.dabpessoa.business.listeners.ControllerListener;
 import me.dabpessoa.business.listeners.RelationShipListener;
-import me.dabpessoa.business.listeners.TablesListener;
 import me.dabpessoa.business.xml.DBModelXMLParser;
 import me.dabpessoa.gui.components.About;
 import me.dabpessoa.util.ImageUtils;
@@ -27,7 +27,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 	private static FundoUI fundo;
 	private List<TabelaUI> listaTabelas = new ArrayList<TabelaUI>();
 	private static JScrollPane scrollPane;
-	private List<TablesListener> listeners;
+	private List<ControllerListener> ControllerListeners;
 	private JFrame frame;
 	public static int count = 0;
 	
@@ -37,7 +37,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 	}
 	
 	public PrincipalUI() {
-		this.listeners = new ArrayList<TablesListener>();
+		this.ControllerListeners = new ArrayList<ControllerListener>();
 	}
 	
     public JMenuBar createMenuBar() {
@@ -55,10 +55,9 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
     public void readModel(StringBuilder xml) {
     	
     	count = 0;
-    	List<TabelaUI> xmlTablesUI = new ArrayList<TabelaUI>();
     	
     	DBModelXMLParser parser = new DBModelXMLParser();
-    	xmlTablesUI = parser.loadXML(xml);
+		List<TabelaUI> xmlTablesUI = parser.loadXML(xml);
     	
     	fundo.removeAll();
     	fundo.updateUI();
@@ -80,17 +79,17 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
     	
     }
     
-    public void addListener(TablesListener listener) {
-    	listeners.add(listener);
+    public void addTableListener(ControllerListener listener) {
+    	ControllerListeners.add(listener);
     }
     
-    public void removeListener(TablesListener listener) {
-    	listeners.remove(listener);
+    public void removeListener(ControllerListener listener) {
+    	ControllerListeners.remove(listener);
     }
     
-    public void updateListeners(Object obj, int acao) {
-    	for (int i = 0 ; i < listeners.size() ; i++) {
-    		listeners.get(i).updateTables(obj, acao);
+    public void updateControllerListeners(Object obj, int acao) {
+    	for (int i = 0; i < ControllerListeners.size() ; i++) {
+    		ControllerListeners.get(i).doAction(obj, acao);
     	}
     }
     
@@ -99,11 +98,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 	} 
     
     public void menuBarAddComponents(JMenuBar menuBar) {
-    	
-//    	menuBar.add(createMenu("Menu 1"));
-//        menuBar.add(createMenu("Menu 2"));
-//        menuBar.add(createMenu("Menu 3"));
-    	
+
 		JButton button = new JButton();
 		button.setToolTipText("Adicionar Tabela");
 		Image im = ImageUtils.redimensiona("src"+File.separator+"main"+File.separator+"resources"+File.separator+"images"+File.separator+"addTable.png", 18, 18);
@@ -226,7 +221,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
-				p.updateListeners(null, Controller.SALVAR_MODELO);
+				p.updateControllerListeners(null, Controller.SALVAR_MODELO);
 				
 			}
 		});
@@ -236,7 +231,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
-				p.updateListeners(null, Controller.CARREGAR_MODELO);
+				p.updateControllerListeners(null, Controller.CARREGAR_MODELO);
 				
 			}
 		});
@@ -247,7 +242,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 			public void actionPerformed(ActionEvent arg0) {
 				
 //				JOptionPane.showMessageDialog(null, "Gerar SQL");
-				p.updateListeners(null, Controller.GERAR_SQL);
+				p.updateControllerListeners(null, Controller.GERAR_SQL);
 				
 			}
 		});
@@ -396,16 +391,16 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 			Point point = calculateCoordinates();
 			createNewTableUI(point);
 
-			this.updateListeners(listaTabelas.get(listaTabelas.size()-1).getTabela(), Controller.ADICIONAR);
+			this.updateControllerListeners(listaTabelas.get(listaTabelas.size()-1).getTabela(), Controller.ADICIONAR);
 			
 		} else if (command.equalsIgnoreCase("button2")) {
 			
 			// Pegar os duas tabelas escolhidas e criar a linha entre elas.
-			this.updateListeners(null, Controller.RELACAO_TABELAS);
+			this.updateControllerListeners(null, Controller.RELACAO_TABELAS);
 			
 		} else if (command.equalsIgnoreCase("button3")) {
 		
-			this.updateListeners(null, Controller.GERAR_SQL);
+			this.updateControllerListeners(null, Controller.GERAR_SQL);
 			
 		}
 		
@@ -457,7 +452,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 					Atributo atrib = tabela1.getTabela().getChavesPrimaria().get(i);
 					Atributo temp1 = new Atributo();
 					
-					IntegritRestriction fk = new IntegritRestriction();
+					RestricaoIntegridade fk = new RestricaoIntegridade();
 					fk.setTabelaNomeFK(tabela1.getTabela().getTitulo());
 					fk.setAtributoFK(atrib.getNome());
 					
@@ -465,7 +460,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 					temp1.setIntegritRestriction(fk);
 					temp1.setNome(atrib.getNome());
 					temp1.setRestrictNull(atrib.isRestrictNull());
-					temp1.setType(atrib.getType());
+					temp1.setTipo(atrib.getTipo());
 					temp1.setUniqueKey(atrib.isUniqueKey());
 					
 					atribs.add(temp1);
@@ -474,7 +469,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 					Atributo atrib = tabela2.getTabela().getChavesPrimaria().get(i);
 					Atributo temp1 = new Atributo();					
 					
-					IntegritRestriction fk = new IntegritRestriction();
+					RestricaoIntegridade fk = new RestricaoIntegridade();
 					fk.setTabelaNomeFK(tabela2.getTabela().getTitulo());
 					fk.setAtributoFK(atrib.getNome());
 					
@@ -482,7 +477,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 					temp1.setIntegritRestriction(fk);
 					temp1.setNome(atrib.getNome());
 					temp1.setRestrictNull(atrib.isRestrictNull());
-					temp1.setType(atrib.getType());
+					temp1.setTipo(atrib.getTipo());
 					temp1.setUniqueKey(atrib.isUniqueKey());
 					
 					atribs.add(temp1);
@@ -520,7 +515,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 					Atributo atrib = tabela2.getTabela().getChavesPrimaria().get(i);
 					Atributo temp = new Atributo();
 					
-					IntegritRestriction fk = new IntegritRestriction();
+					RestricaoIntegridade fk = new RestricaoIntegridade();
 					fk.setTabelaNomeFK(tabela2.getTabela().getTitulo());
 					fk.setAtributoFK(atrib.getNome());
 										
@@ -528,7 +523,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 					temp.setIntegritRestriction(fk);
 					temp.setNome(atrib.getNome());
 					temp.setRestrictNull(atrib.isRestrictNull());
-					temp.setType(atrib.getType());
+					temp.setTipo(atrib.getTipo());
 					temp.setUniqueKey(atrib.isUniqueKey());
 					
 					atribs.add(temp);
@@ -553,7 +548,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 					Atributo atrib = tabela1.getTabela().getChavesPrimaria().get(i);
 					Atributo temp1 = new Atributo();
 					
-					IntegritRestriction fk = new IntegritRestriction();
+					RestricaoIntegridade fk = new RestricaoIntegridade();
 					fk.setTabelaNomeFK(tabela1.getTabela().getTitulo());
 					fk.setAtributoFK(atrib.getNome());
 					
@@ -561,7 +556,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 					temp1.setIntegritRestriction(fk);
 					temp1.setNome(atrib.getNome());
 					temp1.setRestrictNull(atrib.isRestrictNull());
-					temp1.setType(atrib.getType());
+					temp1.setTipo(atrib.getTipo());
 					temp1.setUniqueKey(atrib.isUniqueKey());
 					
 					atribs.add(temp1);
@@ -586,7 +581,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 					Atributo atrib = tabela1.getTabela().getChavesPrimaria().get(i);
 					Atributo temp1 = new Atributo();
 					
-					IntegritRestriction fk = new IntegritRestriction();
+					RestricaoIntegridade fk = new RestricaoIntegridade();
 					fk.setTabelaNomeFK(tabela1.getTabela().getTitulo());
 					fk.setAtributoFK(atrib.getNome());
 					
@@ -594,7 +589,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 					temp1.setIntegritRestriction(fk);
 					temp1.setNome(atrib.getNome());
 					temp1.setRestrictNull(atrib.isRestrictNull());
-					temp1.setType(atrib.getType());
+					temp1.setTipo(atrib.getTipo());
 					temp1.setUniqueKey(atrib.isUniqueKey());
 
 					atribs.add(temp1);
@@ -611,7 +606,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 		
 		fundo.updateUI();
 		
-		this.updateListeners(rs, Controller.ADD_RELATIONSHIP);
+		this.updateControllerListeners(rs, Controller.ADD_RELATIONSHIP);
 		
 	}
 

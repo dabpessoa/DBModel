@@ -303,19 +303,19 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 			ImageIcon icon;
 			if (tabela.getAtributos().get(i).isChavePrimaria()) {
 				icon = new ImageIcon(ImageUtils.redimensiona("src"+File.separator+"main"+File.separator+"resources"+File.separator+"images"+File.separator+"pk.png", 8, 8));
-				JLabel jl = new JLabel(tabela.getAtributos().get(i).getNome() + ": " + tabela.getAtributos().get(i).getType().getDescricao(), icon, JLabel.LEFT);
+				JLabel jl = new JLabel(tabela.getAtributos().get(i).getNome() + ": " + tabela.getAtributos().get(i).getTipo().getDescricao(), icon, JLabel.LEFT);
 				corpoPK.add(jl);
 			} else if (tabela.getAtributos().get(i).isUniqueKey()){
 				icon = new ImageIcon(ImageUtils.redimensiona("src"+File.separator+"main"+File.separator+"resources"+File.separator+"images"+File.separator+"unique.png", 8, 8));
-				JLabel jl = new JLabel(tabela.getAtributos().get(i).getNome() + ": " + tabela.getAtributos().get(i).getType().getDescricao(), icon, JLabel.LEFT);
+				JLabel jl = new JLabel(tabela.getAtributos().get(i).getNome() + ": " + tabela.getAtributos().get(i).getTipo().getDescricao(), icon, JLabel.LEFT);
 				corpoNK.add(jl);
 			} else if (tabela.getAtributos().get(i).getIntegritRestriction() != null){
 				icon = new ImageIcon(ImageUtils.redimensiona("src"+File.separator+"main"+File.separator+"resources"+File.separator+"images"+File.separator+"fk.png", 8, 8));
-				JLabel jl = new JLabel(tabela.getAtributos().get(i).getNome() + ": " + tabela.getAtributos().get(i).getType().getDescricao(), icon, JLabel.LEFT);
+				JLabel jl = new JLabel(tabela.getAtributos().get(i).getNome() + ": " + tabela.getAtributos().get(i).getTipo().getDescricao(), icon, JLabel.LEFT);
 				corpoFK.add(jl);
 			} else {
 				icon = new ImageIcon(ImageUtils.redimensiona("src"+File.separator+"main"+File.separator+"resources"+File.separator+"images"+File.separator+"atributoIcon.png", 8, 8));
-				JLabel jl = new JLabel(tabela.getAtributos().get(i).getNome() + ": " + tabela.getAtributos().get(i).getType().getDescricao(), icon, JLabel.LEFT);
+				JLabel jl = new JLabel(tabela.getAtributos().get(i).getNome() + ": " + tabela.getAtributos().get(i).getTipo().getDescricao(), icon, JLabel.LEFT);
 				corpoNK.add(jl);
 			}
 			
@@ -325,7 +325,7 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 		corpoNK.updateUI();
 		
 		this.tabela = tabela;
-		this.principalUI.updateListeners(tabela, Controller.EDITAR);
+		this.principalUI.updateControllerListeners(tabela, Controller.EDITAR);
 		
 		System.out.println("TabelaUI OK..");
 		
@@ -357,7 +357,7 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 		ImageIcon icon;
 		for (int i = 0 ; i < atributos.size() ; i++) {
 			icon = new ImageIcon(ImageUtils.redimensiona("src"+File.separator+"main"+File.separator+"resources"+File.separator+"images"+File.separator+"fk.png", 8, 8));
-			JLabel jl = new JLabel(atributos.get(i).getNome() + ": " + atributos.get(i).getType().getDescricao(), icon, JLabel.LEFT);
+			JLabel jl = new JLabel(atributos.get(i).getNome() + ": " + atributos.get(i).getTipo().getDescricao(), icon, JLabel.LEFT);
 			corpoFK.add(jl);
 			
 //			JLabel jl = new JLabel(atributos.get(i).getNome() + ": " + atributos.get(i).getTipo().getNome(), icon, JLabel.LEFT);
@@ -378,7 +378,7 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 		ImageIcon icon;
 		for (int i = 0 ; i < atributos.size() ; i++) {
 			icon = new ImageIcon(ImageUtils.redimensiona("src"+File.separator+"main"+File.separator+"resources"+File.separator+"images"+File.separator+"pk.png", 8, 8));
-			JLabel jl = new JLabel(atributos.get(i).getNome() + ": " + atributos.get(i).getType().getDescricao(), icon, JLabel.LEFT);
+			JLabel jl = new JLabel(atributos.get(i).getNome() + ": " + atributos.get(i).getTipo().getDescricao(), icon, JLabel.LEFT);
 			corpoPK.add(jl);
 
 //			JLabel jl = new JLabel(atributos.get(i).getNome() + ": " + atributos.get(i).getTipo().getNome(), icon, JLabel.LEFT);
@@ -397,7 +397,7 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 		}
 		
 		for (int i = 0 ; i < atributos.size() ; i++) {
-			JLabel jl = new JLabel(atributos.get(i).getNome() + ": " + atributos.get(i).getType().getDescricao());
+			JLabel jl = new JLabel(atributos.get(i).getNome() + ": " + atributos.get(i).getTipo().getDescricao());
 			corpoNK.add(jl);
 		}
 		

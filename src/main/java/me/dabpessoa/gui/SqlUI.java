@@ -1,7 +1,7 @@
 package me.dabpessoa.gui;
 
 import me.dabpessoa.business.Controller;
-import me.dabpessoa.business.listeners.TablesListener;
+import me.dabpessoa.business.listeners.ControllerListener;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -32,7 +32,7 @@ public class SqlUI extends javax.swing.JFrame implements ActionListener {
 	private JScrollPane scroll;
 	private StringBuilder sql;
 	
-	private List<TablesListener> listeners;
+	private List<ControllerListener> listeners;
 	private JButton criarBanco;
 
 	/**
@@ -69,23 +69,23 @@ public class SqlUI extends javax.swing.JFrame implements ActionListener {
 		this.textAreaSql.setText(sql.toString());
 	}
 	
- 	public void addListener(TablesListener listener) {
+ 	public void addListener(ControllerListener listener) {
     	listeners.add(listener);
     }
     
-    public void removeListener(TablesListener listener) {
+    public void removeListener(ControllerListener listener) {
     	listeners.remove(listener);
     }
     
     public void updateListeners(Object obj, int acao) {
     	for (int i = 0 ; i < listeners.size() ; i++) {
-    		listeners.get(i).updateTables(obj, acao);
+    		listeners.get(i).doAction(obj, acao);
     	}
     }
 	
 	private SqlUI(StringBuilder sql) {
 		super();
-		this.listeners = new ArrayList<TablesListener>();
+		this.listeners = new ArrayList<ControllerListener>();
 		this.setSql(sql);
 	}
 	
@@ -187,11 +187,11 @@ public class SqlUI extends javax.swing.JFrame implements ActionListener {
 		return sql;
 	}
 
-	public void setListeners(List<TablesListener> listeners) {
+	public void setListeners(List<ControllerListener> listeners) {
 		this.listeners = listeners;
 	}
 
-	public List<TablesListener> getListeners() {
+	public List<ControllerListener> getListeners() {
 		return listeners;
 	}
 
