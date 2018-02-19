@@ -65,7 +65,6 @@ public class About extends JDialog implements WindowListener {
 			getContentPane().add(getDescriptionDBModel());
 			getContentPane().add(getProducers());
 			getContentPane().add(getDiegoAugusto());
-			getContentPane().add(getThiagoMartins());
 			getContentPane().add(getLogo());
 			pack();
 			setSize(400, 300);
@@ -86,7 +85,7 @@ public class About extends JDialog implements WindowListener {
 	private JLabel getVersionDBModel() {
 		if(versionDBModel == null) {
 			versionDBModel = new JLabel();
-			versionDBModel.setText("Vers�o: 1.0");
+			versionDBModel.setText("Versão: 1.0.0");
 			versionDBModel.setBounds(169, 42, 74, 14);
 		}
 		return versionDBModel;
@@ -118,15 +117,6 @@ public class About extends JDialog implements WindowListener {
 			diegoAugusto.setBounds(181, 164, 199, 14);
 		}
 		return diegoAugusto;
-	}
-	
-	private JLabel getThiagoMartins() {
-		if(thiagoMartins == null) {
-			thiagoMartins = new JLabel();
-			thiagoMartins.setText("Thiago Martins");
-			thiagoMartins.setBounds(223, 184, 169, 14);
-		}
-		return thiagoMartins;
 	}
 	
 	private JLabel getLogo() {
