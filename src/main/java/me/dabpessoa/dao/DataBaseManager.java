@@ -46,13 +46,6 @@ public class DataBaseManager {
 			case 2: nomeBanco = "sqlserver";break;
 		}
 		
-		
-		System.out.println("BANCO: "+nomeBanco+ " codigo: "+banco);
-		System.out.println("PROPERTY Driver....: "+p.getProperty(nomeBanco+".driver"));
-		System.out.println("PROPERTY url.......: "+p.getProperty(nomeBanco+".url"));
-		System.out.println("PROPERTY username..: "+p.getProperty(nomeBanco+".username"));
-		System.out.println("PROPERTY password..: "+p.getProperty(nomeBanco+".password"));
-		
 		ConnectionDAO.setDriver(p.getProperty(nomeBanco+".driver"));
 		ConnectionDAO.setUrl(p.getProperty(nomeBanco+".url"));
 		ConnectionDAO.setUsername(p.getProperty(nomeBanco+".username"));

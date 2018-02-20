@@ -6,7 +6,6 @@ import me.dabpessoa.bean.Tabela;
 import me.dabpessoa.bean.enums.TipoAtributo;
 import me.dabpessoa.business.listeners.EditListener;
 import me.dabpessoa.exception.EmptyColumnException;
-import me.dabpessoa.util.Constants;
 import me.dabpessoa.util.ResourceUtils;
 
 import javax.imageio.ImageIO;
@@ -353,7 +352,7 @@ public class TableEditUI extends javax.swing.JFrame implements ActionListener, W
 				DefaultTableModel dtm = (DefaultTableModel) tableAtributos.getModel();
 				for ( int i = 0 ; i < rows ; i++) {
 					Atributo at = new Atributo();
-					for (int j = 0; j < Constants.TABLE_COLUMN_COUNT ; j++) {
+					for (int j = 0; j < Tabela.QUANTIDADE_COLUNAS; j++) {
 						Object obj = dtm.getValueAt(i, j);
 
 						verificaCampos(obj);

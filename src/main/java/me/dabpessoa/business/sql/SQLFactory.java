@@ -2,7 +2,7 @@ package me.dabpessoa.business.sql;
 
 import me.dabpessoa.bean.Atributo;
 import me.dabpessoa.bean.RestricaoIntegridade;
-import me.dabpessoa.bean.Relationship;
+import me.dabpessoa.bean.Relacionamento;
 import me.dabpessoa.bean.Tabela;
 
 import java.util.ArrayList;
@@ -11,13 +11,13 @@ import java.util.List;
 public class SQLFactory {
 
 	private List<Tabela> listaTabelas;
-	private List<Relationship> listaRelacionamentos;
+	private List<Relacionamento> listaRelacionamentos;
 	private StringBuilder codigoSQLGerado;
 	
 	
 	public SQLFactory (){
 		this.listaTabelas = new ArrayList<Tabela>();
-		this.listaRelacionamentos = new ArrayList<Relationship>();
+		this.listaRelacionamentos = new ArrayList<Relacionamento>();
 		this.codigoSQLGerado = new StringBuilder();
 	}
 	
@@ -27,7 +27,7 @@ public class SQLFactory {
 		
 	}
 	
-	public SQLFactory(List<Tabela> tabelas, List<Relationship> relationships) {
+	public SQLFactory(List<Tabela> tabelas, List<Relacionamento> relationships) {
 		this.listaTabelas = tabelas;
 		this.listaRelacionamentos = relationships;
 		this.codigoSQLGerado = new StringBuilder();
@@ -71,14 +71,14 @@ public class SQLFactory {
 		return codigoSQLGerado;
 	}	
 	
-	public StringBuilder GenerateAlterTable (List<Relationship> relacionamentos){
+	public StringBuilder GenerateAlterTable (List<Relacionamento> relacionamentos){
 		
 		listaRelacionamentos = relacionamentos;
 		codigoSQLGerado = new StringBuilder();
 		
 		for (int i = 0; i < listaRelacionamentos.size(); i++){
 				
-			Relationship r = listaRelacionamentos.get(i);
+			Relacionamento r = listaRelacionamentos.get(i);
 			
 			List<Atributo> atribs1 = r.getLeftTable().getAtributos();
 			List<Atributo> atribs2 = r.getRightTable().getAtributos();

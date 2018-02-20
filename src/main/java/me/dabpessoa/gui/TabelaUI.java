@@ -2,10 +2,9 @@ package me.dabpessoa.gui;
 
 import me.dabpessoa.bean.Atributo;
 import me.dabpessoa.bean.Tabela;
-import me.dabpessoa.business.Controller;
+import me.dabpessoa.bean.enums.DBModelAction;
 import me.dabpessoa.business.listeners.EditListener;
 import me.dabpessoa.gui.components.*;
-import me.dabpessoa.util.Constants;
 import me.dabpessoa.util.ImageUtils;
 
 import javax.imageio.ImageIO;
@@ -21,7 +20,7 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 	
 	private static final long serialVersionUID = 1L;
 	private GridBagConstraints c = new GridBagConstraints();
-	private Tabela tabela = new Tabela();
+	private Tabela tabela;
 	private TabelaUITitulo titulo;
 	private TabelaUIPKs corpoPK;
 	private TabelaUIFKs corpoFK;
@@ -45,11 +44,12 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 	public TabelaUI(PrincipalUI principalUI) {
 		super();
 		this.principalUI = principalUI;
+		this.tabela = new Tabela();
 		setBackground(Color.WHITE);
 		initGUI();
 	}
 	
-	public TabelaUI() {}
+	public TabelaUI() {this(null);}
 	
 	public void setPrincipalUI(PrincipalUI principalUI) {
 		this.principalUI = principalUI;
@@ -103,8 +103,8 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 			
 			corpo.add(corpoPK, gb);
 			
-			gb.weightx = Constants.TABLE_DEFAULT_WIDTH;
-			gb.weighty = Constants.TABLE_DEFAULT_HEIGHT;
+			gb.weightx = Tabela.LARGURA_PADRAO;
+			gb.weighty = Tabela.ALTURA_PADRAO;
 			gb.insets = is;
 			gb.gridx = 0;
 			gb.gridy = 1;
@@ -319,9 +319,7 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 		corpoNK.updateUI();
 		
 		this.tabela = tabela;
-		this.principalUI.updateControllerListeners(tabela, Controller.EDITAR);
-		
-		System.out.println("TabelaUI OK..");
+		this.principalUI.updateActionListeners(tabela, DBModelAction.EDITAR);
 		
 		this.getParent().setSize(this.getParent().getPreferredSize());
 		

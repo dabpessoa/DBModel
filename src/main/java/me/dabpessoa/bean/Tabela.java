@@ -5,9 +5,15 @@ import java.util.List;
 
 public class Tabela {
 
+	public static final int LARGURA_PADRAO = 100;
+	public static final int ALTURA_PADRAO = 100;
+	public static final int QUANTIDADE_COLUNAS = 6;
+
 	private String id;
 	private String titulo;
 	private List<Atributo> atributos;
+
+	private TabelaModelo modelo;
 	
 	public Tabela() {
 		this.atributos = new ArrayList<Atributo>();
@@ -68,6 +74,14 @@ public class Tabela {
 
 	public String getId() {
 		return id;
+	}
+
+	public TabelaModelo getModelo() {
+		return modelo;
+	}
+
+	public void setModelo(TabelaModelo modelo) {
+		this.modelo = modelo;
 	}
 
 	@Override

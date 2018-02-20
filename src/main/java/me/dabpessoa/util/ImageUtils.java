@@ -23,7 +23,7 @@ public class ImageUtils {
         if (imgURL != null) {
             return new ImageIcon(imgURL, description);
         } else {
-            System.err.println("N�o foi poss�vel localizar o arquivo: " + path);
+            System.err.println("Não foi possível localizar o arquivo: " + path);
             return null;
         }
     }

@@ -1,7 +1,8 @@
 package me.dabpessoa.business.xml;
 
 import me.dabpessoa.bean.Atributo;
-import me.dabpessoa.bean.Relationship;
+import me.dabpessoa.bean.Relacionamento;
+import me.dabpessoa.bean.Tabela;
 import me.dabpessoa.gui.TabelaUI;
 import me.dabpessoa.util.Tag;
 
@@ -11,23 +12,23 @@ import java.util.List;
 
 public class DBModelXMLParser {
 	
-	private List<TabelaUI> tabelasUI;
-	private List<Relationship> relationships;
+	private List<Tabela> tabelas;
+	private List<Relacionamento> relacionamentos;
 	
 	public DBModelXMLParser() {
-		this.setTabelasUI(new ArrayList<TabelaUI>());
-		this.relationships = new ArrayList<Relationship>();
+		this.setTabelas(new ArrayList<Tabela>());
+		this.relacionamentos = new ArrayList<Relacionamento>();
 	}
 	
-	public DBModelXMLParser(List<TabelaUI> tabelasUI, List<Relationship> relationships) {
-		this.setTabelasUI(tabelasUI);
-		this.relationships = relationships;
+	public DBModelXMLParser(List<Tabela> tabelas, List<Relacionamento> relacionamentos) {
+		this.setTabelas(tabelas);
+		this.relacionamentos = relacionamentos;
 	}
 	
 	public StringBuilder generateXML() {
 		
 		/*
-		 * Gera XML padronizado com base na lista de tabelasUI.
+		 * Gera XML padronizado com base na lista de tabelas.
 		 */
 
 		StringBuilder xml = new StringBuilder();
@@ -35,33 +36,33 @@ public class DBModelXMLParser {
 		xml.append("<DBModel>\n");
 		xml.append("\t<backGround>\n");
 		
-		if (tabelasUI.size() != 0) xml.append("\t\t<tableList>\n");
-		for (int i = 0 ; i < tabelasUI.size() ; i++) {
+		if (tabelas.size() != 0) xml.append("\t\t<tableList>\n");
+		for (int i = 0; i < tabelas.size() ; i++) {
 			xml.append("\t\t\t<tableUI>\n");
 			
-			TabelaUI tabelaUI = tabelasUI.get(i);
+			Tabela tabela = tabelas.get(i);
 			xml.append("\t\t\t\t<title>");
-			xml.append(tabelaUI.getTabela().getTitulo());
+			xml.append(tabela.getTitulo());
 			xml.append("</title>\n");
 			xml.append("\t\t\t\t<position>\n");
 			xml.append("\t\t\t\t\t<prefered-width>");
-			xml.append(tabelaUI.getPreferredSize().getWidth()+"");
+			xml.append(tabela.getModelo().getLargura()+"");
 			xml.append("</prefered-width>\n");
 			xml.append("\t\t\t\t\t<prefered-height>");
-			xml.append(tabelaUI.getPreferredSize().getHeight()+"");
+			xml.append(tabela.getModelo().getAltura()+"");
 			xml.append("</prefered-height>\n");
 			xml.append("\t\t\t\t\t<backGround-relative-width>");
-			xml.append(tabelaUI.getLocation().getX()+"");
+			xml.append(tabela.getModelo().getPosicaoX()+"");
 			xml.append("</backGround-relative-width>\n");
 			xml.append("\t\t\t\t\t<backGround-relative-height>");
-			xml.append(tabelaUI.getLocation().getY()+"");
+			xml.append(tabela.getModelo().getPosicaoY()+"");
 			xml.append("</backGround-relative-height>\n");
 			xml.append("\t\t\t\t</position>\n");
 			
-			if (tabelaUI.getTabela().getAtributos() != null) {
-				if (tabelaUI.getTabela().getAtributos().size() != 0) xml.append("\t\t\t\t<attributeList>\n");
-				for (int j = 0 ; j < tabelaUI.getTabela().getAtributos().size() ; j++) {
-					Atributo atrib = tabelaUI.getTabela().getAtributos().get(j);
+			if (tabela.getAtributos() != null) {
+				if (tabela.getAtributos().size() != 0) xml.append("\t\t\t\t<attributeList>\n");
+				for (int j = 0 ; j < tabela.getAtributos().size() ; j++) {
+					Atributo atrib = tabela.getAtributos().get(j);
 					
 					xml.append("\t\t\t\t\t<attribute>\n");
 					xml.append("\t\t\t\t\t\t<name>");
@@ -80,16 +81,16 @@ public class DBModelXMLParser {
 					
 					
 				}
-				if (tabelaUI.getTabela().getAtributos().size() != 0) xml.append("\t\t\t\t</attributeList>\n");
+				if (tabela.getAtributos().size() != 0) xml.append("\t\t\t\t</attributeList>\n");
 			}
 			
 			xml.append("\t\t\t</tableUI>\n");
 		}
-		if (tabelasUI.size() != 0) xml.append("\t\t</tableList>\n");
+		if (tabelas.size() != 0) xml.append("\t\t</tableList>\n");
 		
-		if (relationships.size() > 0) xml.append("\t\t<relationshipList>\n");
-		for (int i = 0 ; i < relationships.size() ; i++) {
-			Relationship r = relationships.get(i);
+		if (relacionamentos.size() > 0) xml.append("\t\t<relationshipList>\n");
+		for (int i = 0; i < relacionamentos.size() ; i++) {
+			Relacionamento r = relacionamentos.get(i);
 			
 			xml.append("\t\t\t<relationship>\n");
 			xml.append("\t\t\t\t<name>");
@@ -102,7 +103,7 @@ public class DBModelXMLParser {
 			xml.append(r.getRightTable().getTitulo());
 			xml.append("</foreing-table-name>\n");
 		}
-		if (relationships.size() > 0) xml.append("\t\t</relationshipList>\n");
+		if (relacionamentos.size() > 0) xml.append("\t\t</relationshipList>\n");
 		
 		xml.append("\t</backGround>\n");
 		xml.append("</DBModel>\n");
@@ -112,14 +113,12 @@ public class DBModelXMLParser {
 		
 	}
 	
-	public List<TabelaUI> loadXML(StringBuilder xml) {
-		
-		System.out.println("LOAD XML: "+xml.toString());
+	public List<TabelaUI> loadXML(String xml) {
 		
 		List<TabelaUI> tablesUI = new ArrayList<TabelaUI>();
 		
 		/*
-		 * Cria Lista de tabelasUI baseado no XML padronizado.
+		 * Cria Lista de tabelas baseado no XML padronizado.
 		 */
 		
 		TabelaUI teste = new TabelaUI();
@@ -132,12 +131,12 @@ public class DBModelXMLParser {
 		
 	}
 
-	public void setTabelasUI(List<TabelaUI> tabelasUI) {
-		this.tabelasUI = tabelasUI;
+	public void setTabelas(List<Tabela> tabelas) {
+		this.tabelas = tabelas;
 	}
 
-	public List<TabelaUI> getTabelasUI() {
-		return tabelasUI;
+	public List<Tabela> getTabelas() {
+		return tabelas;
 	}
 	
 	public StringBuilder teste() {

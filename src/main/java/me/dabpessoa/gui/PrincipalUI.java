@@ -1,10 +1,10 @@
 package me.dabpessoa.gui;
 
 import me.dabpessoa.bean.Atributo;
-import me.dabpessoa.bean.Relationship;
+import me.dabpessoa.bean.Relacionamento;
 import me.dabpessoa.bean.RestricaoIntegridade;
-import me.dabpessoa.business.Controller;
-import me.dabpessoa.business.listeners.ControllerListener;
+import me.dabpessoa.bean.enums.DBModelAction;
+import me.dabpessoa.business.listeners.ActionListener;
 import me.dabpessoa.business.listeners.RelationShipListener;
 import me.dabpessoa.business.xml.DBModelXMLParser;
 import me.dabpessoa.gui.components.About;
@@ -14,7 +14,6 @@ import me.dabpessoa.util.ResourceUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -22,12 +21,12 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrincipalUI implements ActionListener, RelationShipListener, MouseListener {
+public class PrincipalUI implements java.awt.event.ActionListener, RelationShipListener, MouseListener {
 	
 	private static FundoUI fundo;
 	private List<TabelaUI> listaTabelas = new ArrayList<TabelaUI>();
 	private static JScrollPane scrollPane;
-	private List<ControllerListener> ControllerListeners;
+	private List<ActionListener> actionListeners;
 	private JFrame frame;
 	public static int count = 0;
 	
@@ -37,7 +36,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 	}
 	
 	public PrincipalUI() {
-		this.ControllerListeners = new ArrayList<ControllerListener>();
+		this.actionListeners = new ArrayList<ActionListener>();
 	}
 	
     public JMenuBar createMenuBar() {
@@ -52,7 +51,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
         
     }
     
-    public void readModel(StringBuilder xml) {
+    public void readModel(String xml) {
     	
     	count = 0;
     	
@@ -79,17 +78,17 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
     	
     }
     
-    public void addTableListener(ControllerListener listener) {
-    	ControllerListeners.add(listener);
+    public void addActionListener(ActionListener listener) {
+    	actionListeners.add(listener);
     }
     
-    public void removeListener(ControllerListener listener) {
-    	ControllerListeners.remove(listener);
+    public void removeListener(ActionListener listener) {
+    	actionListeners.remove(listener);
     }
     
-    public void updateControllerListeners(Object obj, int acao) {
-    	for (int i = 0; i < ControllerListeners.size() ; i++) {
-    		ControllerListeners.get(i).doAction(obj, acao);
+    public void updateActionListeners(Object obj, DBModelAction acao) {
+    	for (int i = 0; i < actionListeners.size() ; i++) {
+    		actionListeners.get(i).doAction(obj, acao);
     	}
     }
     
@@ -199,7 +198,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
         JMenu m = new JMenu("Menu");
         
         JMenuItem submenu = new JMenuItem("Sair");
-        submenu.addActionListener(new ActionListener() {
+        submenu.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -215,34 +214,34 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
         
         final PrincipalUI p = this;
         JMenuItem submenu3 = new JMenuItem("Salvar Modelo");
-        submenu3.addActionListener(new ActionListener() {
+        submenu3.addActionListener(new java.awt.event.ActionListener() {
         	
         	
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
-				p.updateControllerListeners(null, Controller.SALVAR_MODELO);
+				p.updateActionListeners(null, DBModelAction.SALVAR_MODELO);
 				
 			}
 		});
         
         JMenuItem submenu4 = new JMenuItem("Carregar Modelo");
-        submenu4.addActionListener(new ActionListener() {
+        submenu4.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
-				p.updateControllerListeners(null, Controller.CARREGAR_MODELO);
+				p.updateActionListeners(null, DBModelAction.CARREGAR_MODELO);
 				
 			}
 		});
         
         JMenuItem submenu5 = new JMenuItem("Gerar SQL");
-        submenu5.addActionListener(new ActionListener() {
+        submenu5.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
 //				JOptionPane.showMessageDialog(null, "Gerar SQL");
-				p.updateControllerListeners(null, Controller.GERAR_SQL);
+				p.updateActionListeners(null, DBModelAction.GERAR_SQL);
 				
 			}
 		});
@@ -254,7 +253,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
         JMenu m2 = new JMenu("Ajuda");
         
         JMenuItem submenu2 = new JMenuItem("Sobre DBModel");
-        submenu2.addActionListener(new ActionListener() {
+        submenu2.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -391,16 +390,16 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 			Point point = calculateCoordinates();
 			createNewTableUI(point);
 
-			this.updateControllerListeners(listaTabelas.get(listaTabelas.size()-1).getTabela(), Controller.ADICIONAR);
+			this.updateActionListeners(listaTabelas.get(listaTabelas.size()-1).getTabela(), DBModelAction.ADICIONAR);
 			
 		} else if (command.equalsIgnoreCase("button2")) {
 			
 			// Pegar os duas tabelas escolhidas e criar a linha entre elas.
-			this.updateControllerListeners(null, Controller.RELACAO_TABELAS);
+			this.updateActionListeners(null, DBModelAction.RELACAO_TABELAS);
 			
 		} else if (command.equalsIgnoreCase("button3")) {
 		
-			this.updateControllerListeners(null, Controller.GERAR_SQL);
+			this.updateActionListeners(null, DBModelAction.GERAR_SQL);
 			
 		}
 		
@@ -430,7 +429,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 		
 		// J� tenho tudo que preciso, agora � s� desenhar!	
 		
-		Relationship rs = new Relationship();
+		Relacionamento rs = new Relacionamento();
 		rs.setNome(objectName);
 		rs.setLeftTable(tabela1.getTabela());
 		rs.setRightTable(tabela2.getTabela());
@@ -493,7 +492,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 				fundo.setT2(tabela2);
 				fundo.addCardinalidade("N:1");
 				
-				rs = new Relationship();
+				rs = new Relacionamento();
 				rs.setNome(objectName);
 				rs.setLeftTable(tabela1.getTabela());
 				rs.setRightTable(temp.getTabela());
@@ -606,7 +605,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 		
 		fundo.updateUI();
 		
-		this.updateControllerListeners(rs, Controller.ADD_RELATIONSHIP);
+		this.updateActionListeners(rs, DBModelAction.ADD_RELATIONSHIP);
 		
 	}
 

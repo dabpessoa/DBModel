@@ -1,11 +1,10 @@
 package me.dabpessoa.gui;
 
-import me.dabpessoa.business.Controller;
-import me.dabpessoa.business.listeners.ControllerListener;
+import me.dabpessoa.bean.enums.DBModelAction;
+import me.dabpessoa.business.listeners.ActionListener;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +21,7 @@ import java.util.List;
 * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
-public class SqlUI extends javax.swing.JFrame implements ActionListener {
+public class SqlUI extends javax.swing.JFrame implements java.awt.event.ActionListener {
 	private static final long serialVersionUID = 1L;
 	private static SqlUI instance;
 	private JLabel sqlGeradoTx;
@@ -30,9 +29,9 @@ public class SqlUI extends javax.swing.JFrame implements ActionListener {
 	private JButton exportarButton;
 	private JButton cancelButton;
 	private JScrollPane scroll;
-	private StringBuilder sql;
+	private String sql;
 	
-	private List<ControllerListener> listeners;
+	private List<ActionListener> actionListeners;
 	private JButton criarBanco;
 
 	/**
@@ -41,17 +40,17 @@ public class SqlUI extends javax.swing.JFrame implements ActionListener {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				SqlUI inst = new SqlUI(new StringBuilder());
+				SqlUI inst = new SqlUI();
 				inst.setResizable(true);
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
 				inst.setSize(500, 500);
-				inst.init(new StringBuilder());
+				inst.init(null);
 			}
 		});
 	}
 	
-	public static SqlUI getInstance(StringBuilder sql) {
+	public static SqlUI getInstance(String sql) {
 		if (instance == null) {
 			instance = new SqlUI(sql);
 			instance.initGUI();
@@ -64,28 +63,32 @@ public class SqlUI extends javax.swing.JFrame implements ActionListener {
 		return instance;
 	}
 	
-	private void init(StringBuilder sql) {
+	private void init(String sql) {
 		this.setSql(sql);
-		this.textAreaSql.setText(sql.toString());
+		this.textAreaSql.setText(sql);
 	}
 	
- 	public void addListener(ControllerListener listener) {
-    	listeners.add(listener);
+ 	public void addActionListener(ActionListener listener) {
+    	actionListeners.add(listener);
     }
     
-    public void removeListener(ControllerListener listener) {
-    	listeners.remove(listener);
+    public void removeListener(ActionListener listener) {
+    	actionListeners.remove(listener);
     }
     
-    public void updateListeners(Object obj, int acao) {
-    	for (int i = 0 ; i < listeners.size() ; i++) {
-    		listeners.get(i).doAction(obj, acao);
+    public void updateListeners(Object obj, DBModelAction acao) {
+    	for (int i = 0; i < actionListeners.size() ; i++) {
+    		actionListeners.get(i).doAction(obj, acao);
     	}
     }
-	
-	private SqlUI(StringBuilder sql) {
+
+    private SqlUI() {
+		this(null);
+	}
+
+	private SqlUI(String sql) {
 		super();
-		this.listeners = new ArrayList<ControllerListener>();
+		this.actionListeners = new ArrayList<ActionListener>();
 		this.setSql(sql);
 	}
 	
@@ -169,30 +172,30 @@ public class SqlUI extends javax.swing.JFrame implements ActionListener {
 			System.out.println("EXPORTAR");
 			
 			// Avisar ao seu ouvinte (Controller) que vai esportar.
-			this.updateListeners(textAreaSql.getText(), Controller.EXPORT_SQL);
+			this.updateListeners(textAreaSql.getText(), DBModelAction.EXPORT_SQL);
 			
 		} else if (command.equalsIgnoreCase("criarBanco")) {
 			
-			this.updateListeners(textAreaSql.getText(), Controller.CRIAR_BANCO);
+			this.updateListeners(textAreaSql.getText(), DBModelAction.CRIAR_BANCO);
 			
 		}
 		
 	}
 
-	public void setSql(StringBuilder sql) {
+	public void setSql(String sql) {
 		this.sql = sql;
 	}
 
-	public StringBuilder getSql() {
+	public String getSql() {
 		return sql;
 	}
 
-	public void setListeners(List<ControllerListener> listeners) {
-		this.listeners = listeners;
+	public void setActionListeners(List<ActionListener> actionListeners) {
+		this.actionListeners = actionListeners;
 	}
 
-	public List<ControllerListener> getListeners() {
-		return listeners;
+	public List<ActionListener> getActionListeners() {
+		return actionListeners;
 	}
 
 }

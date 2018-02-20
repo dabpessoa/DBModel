@@ -1,6 +1,6 @@
 package me.dabpessoa.gui;
 
-import me.dabpessoa.bean.Relationship;
+import me.dabpessoa.bean.Relacionamento;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +14,7 @@ public class FundoUI extends JPanel {
 	private List<TabelaUI> t2s = new ArrayList<TabelaUI>();
 	private List<String> cardinalidades = new ArrayList<String>();
 	
-	private List<Relationship> relationships = new ArrayList<Relationship>();
+	private List<Relacionamento> relationships = new ArrayList<Relacionamento>();
 	
 	public static FundoUI getInstance() {
 		if (instance == null) {
@@ -65,11 +65,11 @@ public class FundoUI extends JPanel {
 
 	}
 
-	public void setRelationships(List<Relationship> relationships) {
+	public void setRelationships(List<Relacionamento> relationships) {
 		this.relationships = relationships;
 	}
 
-	public List<Relationship> getRelationships() {
+	public List<Relacionamento> getRelationships() {
 		return relationships;
 	}
 

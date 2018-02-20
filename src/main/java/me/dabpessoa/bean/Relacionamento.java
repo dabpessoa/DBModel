@@ -1,13 +1,13 @@
 package me.dabpessoa.bean;
 
-public class Relationship {
+public class Relacionamento {
 
 	private String nome;
 	private Tabela leftTable;
 	private Tabela rightTable;
 	private String cardinalidade;
 	
-	public Relationship() {}
+	public Relacionamento() {}
 
 	public String getNome() {
 		return nome;

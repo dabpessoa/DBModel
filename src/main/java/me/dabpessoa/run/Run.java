@@ -1,6 +1,6 @@
 package me.dabpessoa.run;
 
-import me.dabpessoa.business.Controller;
+import me.dabpessoa.business.DBModelManager;
 
 import javax.swing.*;
 
@@ -18,7 +18,7 @@ public class Run {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> new Controller().run());
+		SwingUtilities.invokeLater(() -> new DBModelManager().run());
 	}
 
 }
