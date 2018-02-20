@@ -2,6 +2,7 @@ package me.dabpessoa.gui;
 
 import me.dabpessoa.bean.Atributo;
 import me.dabpessoa.bean.Tabela;
+import me.dabpessoa.bean.TabelaModelo;
 import me.dabpessoa.bean.enums.DBModelAction;
 import me.dabpessoa.business.listeners.EditListener;
 import me.dabpessoa.gui.components.*;
@@ -54,7 +55,16 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 	public void setPrincipalUI(PrincipalUI principalUI) {
 		this.principalUI = principalUI;
 	}
-	
+
+	public void atualizarObjetoTabela() {
+		if (tabela == null) tabela = new Tabela();
+		if (tabela.getModelo() == null) tabela.setModelo(new TabelaModelo());
+		tabela.getModelo().setAltura((double)getParent().getHeight());
+		tabela.getModelo().setLargura((double)getParent().getWidth());
+		tabela.getModelo().setPosicaoX(getParent().getLocation().getX());
+		tabela.getModelo().setPosicaoY(getParent().getLocation().getY());
+	}
+
 	public void initGUI() {
 		try {
 			setBorder(BorderFactory.createBevelBorder(0)); 

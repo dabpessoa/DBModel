@@ -3,8 +3,9 @@ package me.dabpessoa.gui;
 import me.dabpessoa.bean.Atributo;
 import me.dabpessoa.bean.Relacionamento;
 import me.dabpessoa.bean.RestricaoIntegridade;
+import me.dabpessoa.bean.Tabela;
 import me.dabpessoa.bean.enums.DBModelAction;
-import me.dabpessoa.business.listeners.ActionListener;
+import me.dabpessoa.business.listeners.DBModelActionListener;
 import me.dabpessoa.business.listeners.RelationShipListener;
 import me.dabpessoa.business.xml.DBModelXMLParser;
 import me.dabpessoa.gui.components.About;
@@ -14,6 +15,7 @@ import me.dabpessoa.util.ResourceUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -21,12 +23,12 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrincipalUI implements java.awt.event.ActionListener, RelationShipListener, MouseListener {
+public class PrincipalUI implements ActionListener, RelationShipListener, MouseListener {
 	
-	private static FundoUI fundo;
+	private FundoUI fundo;
 	private List<TabelaUI> listaTabelas = new ArrayList<TabelaUI>();
-	private static JScrollPane scrollPane;
-	private List<ActionListener> actionListeners;
+	private JScrollPane scrollPane;
+	private List<DBModelActionListener> actionListeners;
 	private JFrame frame;
 	public static int count = 0;
 	
@@ -36,7 +38,7 @@ public class PrincipalUI implements java.awt.event.ActionListener, RelationShipL
 	}
 	
 	public PrincipalUI() {
-		this.actionListeners = new ArrayList<ActionListener>();
+		this.actionListeners = new ArrayList<DBModelActionListener>();
 	}
 	
     public JMenuBar createMenuBar() {
@@ -78,11 +80,11 @@ public class PrincipalUI implements java.awt.event.ActionListener, RelationShipL
     	
     }
     
-    public void addActionListener(ActionListener listener) {
+    public void addActionListener(DBModelActionListener listener) {
     	actionListeners.add(listener);
     }
     
-    public void removeListener(ActionListener listener) {
+    public void removeListener(DBModelActionListener listener) {
     	actionListeners.remove(listener);
     }
     
@@ -92,7 +94,7 @@ public class PrincipalUI implements java.awt.event.ActionListener, RelationShipL
     	}
     }
     
-    public static JPanel getFundo() {
+    public JPanel getFundo() {
 		return fundo;
 	} 
     
@@ -125,30 +127,6 @@ public class PrincipalUI implements java.awt.event.ActionListener, RelationShipL
 	    menuBar.add(button);
         menuBar.add(button2);
         menuBar.add(button3);
-    	
-    }
-    
-    public void posicao(int x, int y, JPanel painel) {
-		painel.setLocation(x + painel.getX(), y+painel.getY());
-	}
-    
-    public Point calculateCoordinates() {
-    	
-    	Point location = null;
-    	
-    	for (int i = 0 ; i < listaTabelas.size() ; i++) {
-    		
-    		location = listaTabelas.get(i).getParent().getLocation();
-//        	int width = listaTabelas.get(i).getWidth();
-//        	int height = listaTabelas.get(i).getHeight();
-        	
-        	location.x += 10;
-        	location.y += 10;
-        	
-    	}
-    	
-    	if (location == null) return new Point(0,0);
-    	return location;
     	
     }
     
@@ -288,7 +266,7 @@ public class PrincipalUI implements java.awt.event.ActionListener, RelationShipL
         
     }
     
-    public TabelaUI createNewTableUI (Point point) {
+    public TabelaUI createAndAddNewTableUI(Point point) {
         
     	JPanel tablePanel = createTablePanel(point);
 	    
@@ -314,7 +292,7 @@ public class PrincipalUI implements java.awt.event.ActionListener, RelationShipL
     	JPanel tablePanel = new JPanel();
     	
     	tablePanel.setLayout(new GridLayout());
-    	tablePanel.setSize(new Dimension(100, 100));
+    	tablePanel.setSize(new Dimension(Tabela.LARGURA_PADRAO, Tabela.ALTURA_PADRAO));
     	tablePanel.setLocation(point);
     	tablePanel.setBackground(Color.WHITE);
     	tablePanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
@@ -380,6 +358,15 @@ public class PrincipalUI implements java.awt.event.ActionListener, RelationShipL
         }
     }
 
+	public Point calculateVisibleCenterCoordinate() {
+
+		Double x = (scrollPane.getVisibleRect().getWidth() / 2) - (Tabela.LARGURA_PADRAO / 2);
+		Double y = (scrollPane.getVisibleRect().getHeight() / 2) - (Tabela.ALTURA_PADRAO / 2);
+
+		return new Point(x.intValue(), y.intValue());
+
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -387,8 +374,11 @@ public class PrincipalUI implements java.awt.event.ActionListener, RelationShipL
 		
 		if (command.equalsIgnoreCase("button")) {
 			
-			Point point = calculateCoordinates();
-			createNewTableUI(point);
+			Point point = calculateVisibleCenterCoordinate();
+			// Cria a tabela e adiciona no fundo.
+			// E também atualiza o objeto Tabela dentro do UI.
+			createAndAddNewTableUI(point).atualizarObjetoTabela();
+
 
 			this.updateActionListeners(listaTabelas.get(listaTabelas.size()-1).getTabela(), DBModelAction.ADICIONAR);
 			
@@ -440,10 +430,10 @@ public class PrincipalUI implements java.awt.event.ActionListener, RelationShipL
 		if (cardinalidade.equalsIgnoreCase("N:N")) {
 			
 			if (tabela1.getTabela().getChavesPrimaria().isEmpty() || tabela2.getTabela().getChavesPrimaria().isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Nas rela��es N:N � obrigat�rio que as duas tabelas tenham um atributo definido como chave prim�ria");
+				JOptionPane.showMessageDialog(null, "Nas relações N:N é obrigatório que as duas tabelas tenham um atributo definido como chave primária");
 			} else {
 			
-				TabelaUI temp = this.createNewTableUI(new Point(0,0));
+				TabelaUI temp = this.createAndAddNewTableUI(new Point(0,0));
 				temp.setTitle(tabela1.getTabela().getTitulo().substring(0, 3)+"_"+tabela2.getTabela().getTitulo().subSequence(0, 3)+"_table");
 				
 				List<Atributo> atribs = new ArrayList<Atributo>();
@@ -505,7 +495,7 @@ public class PrincipalUI implements java.awt.event.ActionListener, RelationShipL
 		} else if (cardinalidade.equalsIgnoreCase("N:1")) {
 			
 			if (tabela1.getTabela().getChavesPrimaria().isEmpty() || tabela2.getTabela().getChavesPrimaria().isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Para adicionar um relacionamento ao menos uma das tabelas deve conter um atributo definido como chave prim�ria.");
+				JOptionPane.showMessageDialog(null, "Para adicionar um relacionamento ao menos uma das tabelas deve conter um atributo definido como chave primária.");
 			} else {
 				
 				List<Atributo> atribs = new ArrayList<Atributo>();
@@ -539,7 +529,7 @@ public class PrincipalUI implements java.awt.event.ActionListener, RelationShipL
 		} else if (cardinalidade.equalsIgnoreCase("1:N")) {
 			
 			if (tabela1.getTabela().getChavesPrimaria().isEmpty() || tabela2.getTabela().getChavesPrimaria().isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Para adicionar um relacionamento ao menos uma das tabelas deve conter um atributo definido como chave prim�ria.");
+				JOptionPane.showMessageDialog(null, "Para adicionar um relacionamento ao menos uma das tabelas deve conter um atributo definido como chave primária.");
 			} else {
 				
 				List<Atributo> atribs = new ArrayList<Atributo>();
@@ -571,7 +561,7 @@ public class PrincipalUI implements java.awt.event.ActionListener, RelationShipL
 		} else if (cardinalidade.equalsIgnoreCase("1:1")) {
 			
 			if (tabela1.getTabela().getChavesPrimaria().isEmpty() || tabela2.getTabela().getChavesPrimaria().isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Para adicionar um relacionamento ao menos uma das tabelas deve conter um atributo definido como chave prim�ria.");
+				JOptionPane.showMessageDialog(null, "Para adicionar um relacionamento ao menos uma das tabelas deve conter um atributo definido como chave primária.");
 			} else {
 				
 				List<Atributo> atribs = new ArrayList<Atributo>();
@@ -620,7 +610,7 @@ public class PrincipalUI implements java.awt.event.ActionListener, RelationShipL
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2) {
-			this.createNewTableUI(new Point(e.getX(), e.getY()));
+			this.createAndAddNewTableUI(new Point(e.getX(), e.getY()));
 		}
 	}
 

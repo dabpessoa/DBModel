@@ -1,7 +1,7 @@
 package me.dabpessoa.gui;
 
 import me.dabpessoa.bean.enums.DBModelAction;
-import me.dabpessoa.business.listeners.ActionListener;
+import me.dabpessoa.business.listeners.DBModelActionListener;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -31,7 +31,7 @@ public class SqlUI extends javax.swing.JFrame implements java.awt.event.ActionLi
 	private JScrollPane scroll;
 	private String sql;
 	
-	private List<ActionListener> actionListeners;
+	private List<DBModelActionListener> actionListeners;
 	private JButton criarBanco;
 
 	/**
@@ -68,11 +68,11 @@ public class SqlUI extends javax.swing.JFrame implements java.awt.event.ActionLi
 		this.textAreaSql.setText(sql);
 	}
 	
- 	public void addActionListener(ActionListener listener) {
+ 	public void addActionListener(DBModelActionListener listener) {
     	actionListeners.add(listener);
     }
     
-    public void removeListener(ActionListener listener) {
+    public void removeListener(DBModelActionListener listener) {
     	actionListeners.remove(listener);
     }
     
@@ -88,7 +88,7 @@ public class SqlUI extends javax.swing.JFrame implements java.awt.event.ActionLi
 
 	private SqlUI(String sql) {
 		super();
-		this.actionListeners = new ArrayList<ActionListener>();
+		this.actionListeners = new ArrayList<DBModelActionListener>();
 		this.setSql(sql);
 	}
 	
@@ -190,11 +190,11 @@ public class SqlUI extends javax.swing.JFrame implements java.awt.event.ActionLi
 		return sql;
 	}
 
-	public void setActionListeners(List<ActionListener> actionListeners) {
+	public void setActionListeners(List<DBModelActionListener> actionListeners) {
 		this.actionListeners = actionListeners;
 	}
 
-	public List<ActionListener> getActionListeners() {
+	public List<DBModelActionListener> getActionListeners() {
 		return actionListeners;
 	}
 

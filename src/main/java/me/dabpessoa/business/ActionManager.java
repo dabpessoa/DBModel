@@ -3,9 +3,9 @@ package me.dabpessoa.business;
 import me.dabpessoa.bean.Relacionamento;
 import me.dabpessoa.bean.Tabela;
 import me.dabpessoa.bean.enums.DBModelAction;
-import me.dabpessoa.business.listeners.ActionListener;
+import me.dabpessoa.business.listeners.DBModelActionListener;
 
-public class ActionManager implements ActionListener {
+public class ActionManager implements DBModelActionListener {
 
     private DBModelManager dbModelManager;
 
