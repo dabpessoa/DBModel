@@ -81,7 +81,7 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 			titulo = new TabelaUITitulo(new ImageIcon(fundo).getImage());
 			titulo.addMouseListener(this);
 			titulo.addMouseMotionListener(this);
-			this.setTitle("Tabela_"+((principalUI.getManager().getTabelas().size())+1));
+			this.setTitle("Tabela_"+((principalUI.getManager().getModelo().quantidadeTabelas())+1));
 			
 			c.gridx = 0;
 			c.gridy = 0;

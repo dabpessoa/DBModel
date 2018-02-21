@@ -1,12 +1,8 @@
 package me.dabpessoa.gui;
 
-import me.dabpessoa.bean.Atributo;
-import me.dabpessoa.bean.Relacionamento;
-import me.dabpessoa.bean.RestricaoIntegridade;
-import me.dabpessoa.bean.Tabela;
+import me.dabpessoa.bean.*;
 import me.dabpessoa.business.DBModelManager;
-import me.dabpessoa.business.listeners.RelationShipListener;
-import me.dabpessoa.business.xml.DBModelXMLParser;
+import me.dabpessoa.business.listeners.RelacionamentoListener;
 import me.dabpessoa.gui.components.About;
 import me.dabpessoa.util.ImageUtils;
 import me.dabpessoa.util.ResourceUtils;
@@ -22,7 +18,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrincipalUI implements ActionListener, RelationShipListener, MouseListener {
+public class PrincipalUI implements ActionListener, RelacionamentoListener, MouseListener {
 	
 	private FundoUI fundo;
 	private List<TabelaUI> listaTabelas = new ArrayList<TabelaUI>();
@@ -51,27 +47,28 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
         
     }
     
-    public void readModel(String xml) {
+    public void carregarModelo(Modelo modelo) {
 
-    	DBModelXMLParser parser = new DBModelXMLParser();
-		List<TabelaUI> xmlTablesUI = parser.loadXML(xml);
+
     	
-    	fundo.removeAll();
-    	fundo.updateUI();
-    	
-    	for (int i = 0 ; i < xmlTablesUI.size() ; i++) {
-    		
-    		xmlTablesUI.get(i).setPrincipalUI(this);
-    		
-    		Point point = xmlTablesUI.get(i).getLocation();
-    		
-    		JPanel tablePanel = this.createTablePanel(point);
-    		tablePanel.add(xmlTablesUI.get(i));
-    		
-    		this.setTableUI_ID(xmlTablesUI.get(i));
-    		this.addTablePanelToMainPanel(tablePanel);
-    		
-    	}
+//    	fundo.removeAll();
+//    	fundo.updateUI();
+//
+//    	for (int i = 0 ; i < xmlTablesUI.size() ; i++) {
+//
+//    		xmlTablesUI.get(i).setPrincipalUI(this);
+//
+//    		Point point = xmlTablesUI.get(i).getLocation();
+//
+//    		JPanel tablePanel = this.createTablePanel(point);
+//    		tablePanel.add(xmlTablesUI.get(i));
+//
+//    		this.setTableUI_ID(xmlTablesUI.get(i));
+//    		this.addTablePanelToMainPanel(tablePanel);
+//
+//    	}
+
+
     	
     	
     }
@@ -231,7 +228,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
     }
     
     public void setTableUI_ID(TabelaUI tabelaUI) {
-	    tabelaUI.getTabela().setId(manager.getTabelas().size()+1+"");
+	    tabelaUI.getTabela().setId(manager.getModelo().quantidadeTabelas()+1+"");
         listaTabelas.add(tabelaUI);
     }
     
@@ -330,7 +327,7 @@ public class PrincipalUI implements ActionListener, RelationShipListener, MouseL
 		} else if (command.equalsIgnoreCase("button2")) {
 			
 			// Pegar os duas tabelas escolhidas e criar a linha entre elas.
-			manager.criarRelacionamento();
+			manager.mostrarJanelaRelacionamento();
 			
 		} else if (command.equalsIgnoreCase("button3")) {
 

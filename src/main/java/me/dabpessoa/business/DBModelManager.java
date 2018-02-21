@@ -1,7 +1,9 @@
 package me.dabpessoa.business;
 
+import me.dabpessoa.bean.Modelo;
 import me.dabpessoa.bean.Relacionamento;
 import me.dabpessoa.bean.Tabela;
+import me.dabpessoa.business.xml.DBModelXMLParser;
 import me.dabpessoa.business.xml.XMLFilter;
 import me.dabpessoa.dao.DataBase;
 import me.dabpessoa.dao.DataBaseManager;
@@ -11,25 +13,20 @@ import me.dabpessoa.gui.SqlUI;
 import me.dabpessoa.util.FileUtils;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by diego.pessoa on 12/01/2017.
  */
 public class DBModelManager {
 
-    private List<Tabela> tabelas;
-    private List<Relacionamento> relacionamentos;
+    private Modelo modelo;
 
     private PrincipalUI principalUI;
     private DataBaseManager dataBaseManager;
     private DBModelService dbModelService;
 
     public DBModelManager() {
-        this.tabelas = new ArrayList<Tabela>();
-        this.relacionamentos = new ArrayList<Relacionamento>();
+        this.modelo = new Modelo();
         this.dataBaseManager = new DataBaseManager();
         this.dbModelService = new DBModelService();
     }
@@ -40,41 +37,37 @@ public class DBModelManager {
     }
 
     public void adicionarTabela(Tabela tabela) {
-        if (tabelas == null) tabelas = new ArrayList<>();
-        this.tabelas.add(tabela);
+       modelo.adicionarTabela(tabela);
     }
 
     public void removerTabela(Tabela tabela) {
-        if (tabelas == null) return;
-        this.tabelas.remove(tabela);
+        modelo.removerTabela(tabela);
     }
 
     public void atualizarTabela(Tabela tabela) {
-        dbModelService.atualizarTabela(tabelas, tabela);
+        modelo.atualizarTabela(tabela);
     }
 
-    public void criarRelacionamento() {
-        RelationshipUI relationShip = RelationshipUI.getInstance(principalUI.getListaTabelas());
-        relationShip.setListener(principalUI);
+    public void mostrarJanelaRelacionamento() {
+        RelationshipUI relationShip = RelationshipUI.show(principalUI.getListaTabelas());
+        relationShip.setRelacionamentoListener(principalUI);
     }
 
     public void gerarEMostrarSQL() {
-        String sql = dbModelService.gerarSQL(tabelas, relacionamentos);
+        String sql = dbModelService.gerarSQL(modelo);
         SqlUI.getInstance(this, sql);
     }
 
     public void adicionarRelacionamento(Relacionamento relacionamento) {
-        if (relacionamentos == null) relacionamentos = new ArrayList<>();
-        this.relacionamentos.add(relacionamento);
+        modelo.adicionarRelacionamento(relacionamento);
     }
 
     public void removerRelacionamento(Relacionamento relacionamento) {
-        if (relacionamentos == null) return;
-        relacionamentos.remove(relacionamento);
+        modelo.removerRelacionamento(relacionamento);
     }
 
     public void salvarArquivoModelo() {
-        String modeloString = dbModelService.criarArquivoModelo(tabelas, relacionamentos);
+        String modeloString = dbModelService.criarArquivoModelo(modelo);
         String extensions[] = {".xml"};
         FileUtils.createFileChooser(this.principalUI.getFrame(), "Salvar Modelo", extensions, modeloString);
     }
@@ -90,7 +83,8 @@ public class DBModelManager {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
 
             String modeloXMLString = dbModelService.lerModeloDoDisco(fc.getSelectedFile().getPath());
-            this.principalUI.readModel(modeloXMLString);
+            this.modelo = DBModelXMLParser.loadXML(modeloXMLString);
+            this.principalUI.carregarModelo(modelo);
 
         }
 
@@ -122,20 +116,12 @@ public class DBModelManager {
 
     }
 
-    public List<Tabela> getTabelas() {
-        return Collections.unmodifiableList(tabelas);
+    public Modelo getModelo() {
+        return modelo;
     }
 
-    public void setTabelas(List<Tabela> tabelas) {
-        this.tabelas = tabelas;
-    }
-
-    public List<Relacionamento> getRelacionamentos() {
-        return Collections.unmodifiableList(relacionamentos);
-    }
-
-    public void setRelacionamentos(List<Relacionamento> relacionamentos) {
-        this.relacionamentos = relacionamentos;
+    public void setModelo(Modelo modelo) {
+        this.modelo = modelo;
     }
 
     public PrincipalUI getPrincipalUI() {

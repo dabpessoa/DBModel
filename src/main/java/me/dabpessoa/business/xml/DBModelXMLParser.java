@@ -1,6 +1,7 @@
 package me.dabpessoa.business.xml;
 
 import me.dabpessoa.bean.Atributo;
+import me.dabpessoa.bean.Modelo;
 import me.dabpessoa.bean.Relacionamento;
 import me.dabpessoa.bean.Tabela;
 import me.dabpessoa.gui.TabelaUI;
@@ -12,21 +13,11 @@ import java.util.List;
 
 public class DBModelXMLParser {
 	
-	private List<Tabela> tabelas;
-	private List<Relacionamento> relacionamentos;
-	
-	public DBModelXMLParser() {
-		this.setTabelas(new ArrayList<Tabela>());
-		this.relacionamentos = new ArrayList<Relacionamento>();
-	}
-	
-	public DBModelXMLParser(List<Tabela> tabelas, List<Relacionamento> relacionamentos) {
-		this.setTabelas(tabelas);
-		this.relacionamentos = relacionamentos;
-	}
-	
-	public StringBuilder generateXML() {
-		
+	public static StringBuilder generateXML(Modelo modelo) {
+
+		List<Tabela> tabelas = modelo.getTabelas();
+		List<Relacionamento> relacionamentos = modelo.getRelacionamentos();
+
 		/*
 		 * Gera XML padronizado com base na lista de tabelas.
 		 */
@@ -112,8 +103,9 @@ public class DBModelXMLParser {
 		
 		
 	}
-	
-	public List<TabelaUI> loadXML(String xml) {
+
+	// TODO FIXME implementar e testar
+	public static Modelo loadXML(String xml) {
 		
 		List<TabelaUI> tablesUI = new ArrayList<TabelaUI>();
 		
@@ -127,16 +119,8 @@ public class DBModelXMLParser {
 		tablesUI.add(teste);
 		
 		
-		return tablesUI;
+		return null;
 		
-	}
-
-	public void setTabelas(List<Tabela> tabelas) {
-		this.tabelas = tabelas;
-	}
-
-	public List<Tabela> getTabelas() {
-		return tabelas;
 	}
 	
 	public StringBuilder teste() {

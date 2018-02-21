@@ -38,7 +38,7 @@ public class ActionManager implements DBModelActionListener {
             } break;
             case RELACAO_TABELAS: {
 
-                dbModelManager.criarRelacionamento();
+                dbModelManager.mostrarJanelaRelacionamento();
 
             } break;
             case GERAR_SQL: {

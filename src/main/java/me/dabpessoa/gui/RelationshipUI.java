@@ -1,6 +1,6 @@
 package me.dabpessoa.gui;
 
-import me.dabpessoa.business.listeners.RelationShipListener;
+import me.dabpessoa.business.listeners.RelacionamentoListener;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -29,7 +29,7 @@ public class RelationshipUI extends javax.swing.JFrame implements ActionListener
 	private JComboBox primaryTableCombo;
 	private JComboBox foreignTableCombo;
 	private List<TabelaUI> listaTabelas;
-	private RelationShipListener listener;
+	private RelacionamentoListener listener;
 	private JScrollPane scrollTable1;
 	private JScrollPane scrollTable2;
 	
@@ -37,7 +37,7 @@ public class RelationshipUI extends javax.swing.JFrame implements ActionListener
 		super();
 	}
 	
-	public static RelationshipUI getInstance(List<TabelaUI> listaTabelas) {
+	public static RelationshipUI show(List<TabelaUI> listaTabelas) {
 		if (instance == null) {
 			instance = new RelationshipUI();
 			instance.setListaTabelasSingleton(listaTabelas);
@@ -59,7 +59,7 @@ public class RelationshipUI extends javax.swing.JFrame implements ActionListener
 		this.listaTabelas = listaTabelas;
 	}
 	
-	public void setListener(RelationShipListener listener) {
+	public void setRelacionamentoListener(RelacionamentoListener listener) {
 		this.listener = listener;
 	}
 	

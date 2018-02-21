@@ -1,11 +1,8 @@
 package me.dabpessoa.business;
 
-import me.dabpessoa.bean.Relacionamento;
-import me.dabpessoa.bean.Tabela;
+import me.dabpessoa.bean.Modelo;
 import me.dabpessoa.business.sql.SQLFactory;
 import me.dabpessoa.business.xml.DBModelXMLParser;
-
-import java.util.List;
 
 public class DBModelService {
 
@@ -15,37 +12,27 @@ public class DBModelService {
         return modeloBuilder.toString();
     }
 
-    public String criarArquivoModelo(List<Tabela> tabelas, List<Relacionamento> relacionamentos) {
-        DBModelXMLParser parser = new DBModelXMLParser(tabelas, relacionamentos);
-        return parser.generateXML().toString();
+    public String criarArquivoModelo(Modelo modelo) {
+        return DBModelXMLParser.generateXML(modelo).toString();
     }
 
-    public void atualizarTabela(List<Tabela> tabelas, Tabela tabela) {
-        for (int i = 0 ; i < tabelas.size() ; i++) {
-            if (tabelas.get(i).getId().equalsIgnoreCase(tabela.getId())) {
-                tabelas.remove(i);
-                tabelas.add(tabela);
-            }
-        }
-    }
+    public String gerarSQL(Modelo modelo) {
 
-    public String gerarSQL(List<Tabela> tabelas, List<Relacionamento> relacionamentos) {
-
-        for (int i = 0 ; i < tabelas.size() ; i++) {
-            System.out.println("TITULO: "+tabelas.get(i).getTitulo());
+        for (int i = 0 ; i < modelo.quantidadeTabelas() ; i++) {
+            System.out.println("TITULO: "+modelo.getTabelas().get(i).getTitulo());
         }
 
 
         SQLFactory sql = new SQLFactory();
-        System.out.println(""+sql.GenerateCreateTable(tabelas).toString());
+        System.out.println(""+sql.GenerateCreateTable(modelo.getTabelas()).toString());
         System.out.println();
         System.out.println();
-        System.out.println(""+sql.GenerateAlterTable(relacionamentos).toString());
+        System.out.println(""+sql.GenerateAlterTable(modelo.getRelacionamentos()).toString());
 
 
         StringBuilder sqlBuilder = new StringBuilder();
-        sqlBuilder.append(sql.GenerateCreateTable(tabelas).toString());
-        sqlBuilder.append(sql.GenerateAlterTable(relacionamentos).toString());
+        sqlBuilder.append(sql.GenerateCreateTable(modelo.getTabelas()).toString());
+        sqlBuilder.append(sql.GenerateAlterTable(modelo.getRelacionamentos()).toString());
 
         return sqlBuilder.toString();
 
