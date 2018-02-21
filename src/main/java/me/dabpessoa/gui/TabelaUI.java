@@ -3,7 +3,7 @@ package me.dabpessoa.gui;
 import me.dabpessoa.bean.Atributo;
 import me.dabpessoa.bean.Tabela;
 import me.dabpessoa.bean.TabelaModelo;
-import me.dabpessoa.bean.enums.DBModelAction;
+import me.dabpessoa.business.DBModelManager;
 import me.dabpessoa.business.listeners.EditListener;
 import me.dabpessoa.gui.components.*;
 import me.dabpessoa.util.ImageUtils;
@@ -36,7 +36,7 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 	*/
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
-		frame.getContentPane().add(new TabelaUI(new PrincipalUI()));
+		frame.getContentPane().add(new TabelaUI(new PrincipalUI(new DBModelManager())));
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
@@ -81,7 +81,7 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 			titulo = new TabelaUITitulo(new ImageIcon(fundo).getImage());
 			titulo.addMouseListener(this);
 			titulo.addMouseMotionListener(this);
-			this.setTitle("Tabela_"+((PrincipalUI.count)+1));
+			this.setTitle("Tabela_"+((principalUI.getManager().getTabelas().size())+1));
 			
 			c.gridx = 0;
 			c.gridy = 0;
@@ -329,7 +329,7 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 		corpoNK.updateUI();
 		
 		this.tabela = tabela;
-		this.principalUI.updateActionListeners(tabela, DBModelAction.EDITAR);
+		this.principalUI.getManager().atualizarTabela(tabela);
 		
 		this.getParent().setSize(this.getParent().getPreferredSize());
 		

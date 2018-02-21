@@ -5,6 +5,7 @@ import me.dabpessoa.bean.Tabela;
 import me.dabpessoa.bean.enums.DBModelAction;
 import me.dabpessoa.business.listeners.DBModelActionListener;
 
+@Deprecated
 public class ActionManager implements DBModelActionListener {
 
     private DBModelManager dbModelManager;
@@ -63,7 +64,8 @@ public class ActionManager implements DBModelActionListener {
             } break;
             case EXPORT_SQL: {
 
-                dbModelManager.exportarSQL();
+                String sql = (String) obj;
+                dbModelManager.exportarSQL(sql);
 
             } break;
             case CRIAR_BANCO: {

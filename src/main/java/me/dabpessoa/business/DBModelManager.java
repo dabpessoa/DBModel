@@ -25,20 +25,17 @@ public class DBModelManager {
 
     private PrincipalUI principalUI;
     private DataBaseManager dataBaseManager;
-    private ActionManager actionManager;
     private DBModelService dbModelService;
 
     public DBModelManager() {
         this.tabelas = new ArrayList<Tabela>();
         this.relacionamentos = new ArrayList<Relacionamento>();
         this.dataBaseManager = new DataBaseManager();
-        this.actionManager = new ActionManager(this);
         this.dbModelService = new DBModelService();
     }
 
     public void run() {
-        principalUI = new PrincipalUI();
-        principalUI.addActionListener(actionManager);
+        principalUI = new PrincipalUI(this);
         principalUI.createAndShowGUI();
     }
 
@@ -63,7 +60,7 @@ public class DBModelManager {
 
     public void gerarEMostrarSQL() {
         String sql = dbModelService.gerarSQL(tabelas, relacionamentos);
-        SqlUI.getInstance(sql).addActionListener(actionManager);
+        SqlUI.getInstance(this, sql);
     }
 
     public void adicionarRelacionamento(Relacionamento relacionamento) {
@@ -99,14 +96,12 @@ public class DBModelManager {
 
     }
 
-    public void exportarSQL() {
+    public void exportarSQL(String sql) {
         /*
          * Método para abrir caixa de diálogo
          * para ser escolhido o local onde será
          * salvo o arquivo ".sql"
          */
-
-        String sql = dbModelService.gerarSQL(tabelas, relacionamentos);
 
         String[] extensions = {".sql"};
         FileUtils.createFileChooser(this.principalUI.getFrame(), "Gerar SQL", extensions, sql);

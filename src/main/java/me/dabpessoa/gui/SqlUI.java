@@ -1,12 +1,9 @@
 package me.dabpessoa.gui;
 
-import me.dabpessoa.bean.enums.DBModelAction;
-import me.dabpessoa.business.listeners.DBModelActionListener;
+import me.dabpessoa.business.DBModelManager;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -30,8 +27,8 @@ public class SqlUI extends javax.swing.JFrame implements java.awt.event.ActionLi
 	private JButton cancelButton;
 	private JScrollPane scroll;
 	private String sql;
-	
-	private List<DBModelActionListener> actionListeners;
+	private DBModelManager manager;
+
 	private JButton criarBanco;
 
 	/**
@@ -50,9 +47,9 @@ public class SqlUI extends javax.swing.JFrame implements java.awt.event.ActionLi
 		});
 	}
 	
-	public static SqlUI getInstance(String sql) {
+	public static SqlUI getInstance(DBModelManager manager, String sql) {
 		if (instance == null) {
-			instance = new SqlUI(sql);
+			instance = new SqlUI(manager, sql);
 			instance.initGUI();
 			instance.setLocationRelativeTo(null);
 			instance.setResizable(false);
@@ -67,28 +64,14 @@ public class SqlUI extends javax.swing.JFrame implements java.awt.event.ActionLi
 		this.setSql(sql);
 		this.textAreaSql.setText(sql);
 	}
-	
- 	public void addActionListener(DBModelActionListener listener) {
-    	actionListeners.add(listener);
-    }
-    
-    public void removeListener(DBModelActionListener listener) {
-    	actionListeners.remove(listener);
-    }
-    
-    public void updateListeners(Object obj, DBModelAction acao) {
-    	for (int i = 0; i < actionListeners.size() ; i++) {
-    		actionListeners.get(i).doAction(obj, acao);
-    	}
-    }
 
     private SqlUI() {
-		this(null);
+		this(null, null);
 	}
 
-	private SqlUI(String sql) {
+	private SqlUI(DBModelManager manager, String sql) {
 		super();
-		this.actionListeners = new ArrayList<DBModelActionListener>();
+		this.setManager(manager);
 		this.setSql(sql);
 	}
 	
@@ -163,20 +146,16 @@ public class SqlUI extends javax.swing.JFrame implements java.awt.event.ActionLi
 		String command = e.getActionCommand();
 		
 		if (command.equalsIgnoreCase("cancel")) {
-			
-			System.out.println("CANCELAR...!");
+
 			this.dispose();
 			
 		} else if (command.equalsIgnoreCase("export")) {
-			
-			System.out.println("EXPORTAR");
-			
-			// Avisar ao seu ouvinte (Controller) que vai esportar.
-			this.updateListeners(textAreaSql.getText(), DBModelAction.EXPORT_SQL);
+
+			manager.exportarSQL(textAreaSql.getText());
 			
 		} else if (command.equalsIgnoreCase("criarBanco")) {
-			
-			this.updateListeners(textAreaSql.getText(), DBModelAction.CRIAR_BANCO);
+
+			manager.criarBanco(textAreaSql.getText());
 			
 		}
 		
@@ -190,12 +169,12 @@ public class SqlUI extends javax.swing.JFrame implements java.awt.event.ActionLi
 		return sql;
 	}
 
-	public void setActionListeners(List<DBModelActionListener> actionListeners) {
-		this.actionListeners = actionListeners;
+	public DBModelManager getManager() {
+		return manager;
 	}
 
-	public List<DBModelActionListener> getActionListeners() {
-		return actionListeners;
+	public void setManager(DBModelManager manager) {
+		this.manager = manager;
 	}
 
 }

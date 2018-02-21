@@ -489,7 +489,7 @@ public final class FileUtils {
                         + " in path " + filePath.getPath() + ".");
                 }
 
-                // Glue counter between prefix and suffix, e.g. "name[" + count + "].ext".
+                // Glue counter between prefix and suffix, e.g. "name[" + quantidadeTabelas + "].ext".
                 file = new File(filePath, prefix + (count++) + suffix);
             }
         }
