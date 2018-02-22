@@ -11,8 +11,11 @@ import me.dabpessoa.gui.PrincipalUI;
 import me.dabpessoa.gui.RelationshipUI;
 import me.dabpessoa.gui.SqlUI;
 import me.dabpessoa.util.FileUtils;
+import org.xml.sax.SAXException;
 
 import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 
 /**
  * Created by diego.pessoa on 12/01/2017.
@@ -83,7 +86,15 @@ public class DBModelManager {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
 
             String modeloXMLString = dbModelService.lerModeloDoDisco(fc.getSelectedFile().getPath());
-            this.modelo = DBModelXMLParser.loadXML(modeloXMLString);
+            try {
+                this.modelo = DBModelXMLParser.loadXML(modeloXMLString);
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SAXException e) {
+                e.printStackTrace();
+            }
             this.principalUI.carregarModelo(modelo);
 
         }

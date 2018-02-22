@@ -4,83 +4,87 @@ import me.dabpessoa.bean.Atributo;
 import me.dabpessoa.bean.Modelo;
 import me.dabpessoa.bean.Relacionamento;
 import me.dabpessoa.bean.Tabela;
-import me.dabpessoa.gui.TabelaUI;
 import me.dabpessoa.util.Tag;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
-import java.awt.*;
-import java.util.ArrayList;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 
 public class DBModelXMLParser {
-	
+
+	/*
+		 * Gera XML padronizado com base no modelo desenhado no programa.
+		 */
 	public static StringBuilder generateXML(Modelo modelo) {
+
+		if (modelo == null) return null;
 
 		List<Tabela> tabelas = modelo.getTabelas();
 		List<Relacionamento> relacionamentos = modelo.getRelacionamentos();
 
-		/*
-		 * Gera XML padronizado com base na lista de tabelas.
-		 */
-
 		StringBuilder xml = new StringBuilder();
 		
 		xml.append("<DBModel>\n");
-		xml.append("\t<backGround>\n");
 		
-		if (tabelas.size() != 0) xml.append("\t\t<tableList>\n");
-		for (int i = 0; i < tabelas.size() ; i++) {
-			xml.append("\t\t\t<tableUI>\n");
+		if (modelo.quantidadeTabelas() != 0) xml.append("\t<tabelas>\n");
+		for (int i = 0; i < modelo.quantidadeTabelas() ; i++) {
+			xml.append("\t\t<tabela>\n");
 			
 			Tabela tabela = tabelas.get(i);
-			xml.append("\t\t\t\t<title>");
+			xml.append("\t\t\t<titulo>");
 			xml.append(tabela.getTitulo());
-			xml.append("</title>\n");
-			xml.append("\t\t\t\t<position>\n");
-			xml.append("\t\t\t\t\t<prefered-width>");
+			xml.append("</titulo>\n");
+			xml.append("\t\t\t<largura>");
 			xml.append(tabela.getModelo().getLargura()+"");
-			xml.append("</prefered-width>\n");
-			xml.append("\t\t\t\t\t<prefered-height>");
+			xml.append("</largura>\n");
+			xml.append("\t\t\t<altura>");
 			xml.append(tabela.getModelo().getAltura()+"");
-			xml.append("</prefered-height>\n");
-			xml.append("\t\t\t\t\t<backGround-relative-width>");
+			xml.append("</altura>\n");
+			xml.append("\t\t\t<posicaoX>");
 			xml.append(tabela.getModelo().getPosicaoX()+"");
-			xml.append("</backGround-relative-width>\n");
-			xml.append("\t\t\t\t\t<backGround-relative-height>");
+			xml.append("</posicaoX>\n");
+			xml.append("\t\t\t<posicaoY>");
 			xml.append(tabela.getModelo().getPosicaoY()+"");
-			xml.append("</backGround-relative-height>\n");
-			xml.append("\t\t\t\t</position>\n");
+			xml.append("</posicaoY>\n");
 			
 			if (tabela.getAtributos() != null) {
-				if (tabela.getAtributos().size() != 0) xml.append("\t\t\t\t<attributeList>\n");
+				if (tabela.getAtributos().size() != 0) xml.append("\t\t\t\t<atributos>\n");
 				for (int j = 0 ; j < tabela.getAtributos().size() ; j++) {
 					Atributo atrib = tabela.getAtributos().get(j);
 					
-					xml.append("\t\t\t\t\t<attribute>\n");
-					xml.append("\t\t\t\t\t\t<name>");
+					xml.append("\t\t\t\t\t<atributo>\n");
+					xml.append("\t\t\t\t\t\t<nome>");
 					xml.append(atrib.getNome());
-					xml.append("<name>\n");
-					xml.append("\t\t\t\t\t\t<type>");
+					xml.append("</nome>\n");
+					xml.append("\t\t\t\t\t\t<tipo>");
 					xml.append(atrib.getTipo().getDescricao());
-					xml.append("</type>\n");
-					xml.append("\t\t\t\t\t\t<primary-key>");
+					xml.append("</tipo>\n");
+					xml.append("\t\t\t\t\t\t<chave-primaria>");
 					xml.append(atrib.isChavePrimaria()+"");
-					xml.append("</primary-key>\n");
-					xml.append("\t\t\t\t\t\t<nullable>");
+					xml.append("</chave-primaria>\n");
+					xml.append("\t\t\t\t\t\t<podeSerNulo>");
 					xml.append(atrib.isRestrictNull()+"");
-					xml.append("</nullable>\n");
-					xml.append("\t\t\t\t\t</attribute>\n");
+					xml.append("</podeSerNulo>\n");
+					xml.append("\t\t\t\t\t</atributo>\n");
 					
 					
 				}
-				if (tabela.getAtributos().size() != 0) xml.append("\t\t\t\t</attributeList>\n");
+				if (tabela.getAtributos().size() != 0) xml.append("\t\t\t\t</atributos>\n");
 			}
 			
-			xml.append("\t\t\t</tableUI>\n");
+			xml.append("\t\t</tabela>\n");
 		}
-		if (tabelas.size() != 0) xml.append("\t\t</tableList>\n");
+		if (modelo.quantidadeTabelas() != 0) xml.append("\t</tabelas>\n");
 		
-		if (relacionamentos.size() > 0) xml.append("\t\t<relationshipList>\n");
-		for (int i = 0; i < relacionamentos.size() ; i++) {
+		if (modelo.quantidadeRelacionamentos() > 0) xml.append("\t\t<relacionamentos>\n");
+		for (int i = 0; i < modelo.quantidadeRelacionamentos() ; i++) {
 			Relacionamento r = relacionamentos.get(i);
 			
 			xml.append("\t\t\t<relationship>\n");
@@ -94,9 +98,8 @@ public class DBModelXMLParser {
 			xml.append(r.getRightTable().getTitulo());
 			xml.append("</foreing-table-name>\n");
 		}
-		if (relacionamentos.size() > 0) xml.append("\t\t</relationshipList>\n");
-		
-		xml.append("\t</backGround>\n");
+		if (modelo.quantidadeRelacionamentos() > 0) xml.append("\t\t</relacionamentos>\n");
+
 		xml.append("</DBModel>\n");
 		
 		return xml;
@@ -105,20 +108,45 @@ public class DBModelXMLParser {
 	}
 
 	// TODO FIXME implementar e testar
-	public static Modelo loadXML(String xml) {
-		
-		List<TabelaUI> tablesUI = new ArrayList<TabelaUI>();
-		
-		/*
-		 * Cria Lista de tabelas baseado no XML padronizado.
-		 */
-		
-		TabelaUI teste = new TabelaUI();
-		teste.setBackground(Color.WHITE);
-		teste.initGUI();
-		tablesUI.add(teste);
-		
-		
+	public static Modelo loadXML(String xml) throws ParserConfigurationException, IOException, SAXException {
+
+
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document doc = dBuilder.parse(new ByteArrayInputStream(xml.getBytes()));
+
+		//optional, but recommended
+		//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+		doc.getDocumentElement().normalize();
+
+		System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+
+//		NodeList nList = doc.getElementsByTagName("DBModel");
+		NodeList nList = doc.getDocumentElement().getChildNodes();
+
+		System.out.println("----------------------------");
+
+		for (int temp = 0; temp < nList.getLength(); temp++) {
+
+			Node nNode = nList.item(temp);
+
+			System.out.println("\nCurrent Element :" + nNode.getNodeName());
+
+//			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+//
+//					Element eElement = (Element) nNode;
+//
+//					System.out.println("Staff id : " + eElement.getAttribute("id"));
+//					System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).getTextContent());
+//					System.out.println("Last Name : " + eElement.getElementsByTagName("lastname").item(0).getTextContent());
+//					System.out.println("Nick Name : " + eElement.getElementsByTagName("nickname").item(0).getTextContent());
+//					System.out.println("Salary : " + eElement.getElementsByTagName("salary").item(0).getTextContent());
+//
+//				}
+//			}
+
+		}
+
 		return null;
 		
 	}
