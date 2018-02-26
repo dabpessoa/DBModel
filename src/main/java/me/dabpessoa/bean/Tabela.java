@@ -16,13 +16,22 @@ public class Tabela {
 	private TabelaModelo modelo;
 	
 	public Tabela() {
-		this.atributos = new ArrayList<Atributo>();
+		this(null, null, null);
 	}
 
-	public Tabela(String titulo, List<Atributo> atributos) {
+	public Tabela(String titulo) {
+		this(titulo, null, null);
+	}
+
+	public Tabela(String titulo, TabelaModelo tabelaModelo) {
+		this(titulo, null, tabelaModelo);
+	}
+
+	public Tabela(String titulo, List<Atributo> atributos, TabelaModelo tabelaModelo) {
 		super();
 		this.titulo = titulo;
 		this.atributos = atributos;
+		this.modelo = tabelaModelo;
 	}
 	
 	public List<Atributo> getChavesPrimaria() {

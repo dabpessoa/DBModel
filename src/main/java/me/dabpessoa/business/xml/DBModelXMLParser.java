@@ -4,16 +4,10 @@ import me.dabpessoa.bean.Atributo;
 import me.dabpessoa.bean.Modelo;
 import me.dabpessoa.bean.Relacionamento;
 import me.dabpessoa.bean.Tabela;
-import me.dabpessoa.util.Tag;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import me.dabpessoa.util.xml.XMLReader;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -22,7 +16,7 @@ public class DBModelXMLParser {
 	/*
 		 * Gera XML padronizado com base no modelo desenhado no programa.
 		 */
-	public static StringBuilder generateXML(Modelo modelo) {
+	public static String generateXML(Modelo modelo) {
 
 		if (modelo == null) return null;
 
@@ -102,63 +96,13 @@ public class DBModelXMLParser {
 
 		xml.append("</DBModel>\n");
 		
-		return xml;
+		return xml.toString();
 		
 		
 	}
 
-	// TODO FIXME implementar e testar
 	public static Modelo loadXML(String xml) throws ParserConfigurationException, IOException, SAXException {
-
-
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		Document doc = dBuilder.parse(new ByteArrayInputStream(xml.getBytes()));
-
-		//optional, but recommended
-		//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
-		doc.getDocumentElement().normalize();
-
-		System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
-
-//		NodeList nList = doc.getElementsByTagName("DBModel");
-		NodeList nList = doc.getDocumentElement().getChildNodes();
-
-		System.out.println("----------------------------");
-
-		for (int temp = 0; temp < nList.getLength(); temp++) {
-
-			Node nNode = nList.item(temp);
-
-			System.out.println("\nCurrent Element :" + nNode.getNodeName());
-
-//			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-//
-//					Element eElement = (Element) nNode;
-//
-//					System.out.println("Staff id : " + eElement.getAttribute("id"));
-//					System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).getTextContent());
-//					System.out.println("Last Name : " + eElement.getElementsByTagName("lastname").item(0).getTextContent());
-//					System.out.println("Nick Name : " + eElement.getElementsByTagName("nickname").item(0).getTextContent());
-//					System.out.println("Salary : " + eElement.getElementsByTagName("salary").item(0).getTextContent());
-//
-//				}
-//			}
-
-		}
-
-		return null;
-		
-	}
-	
-	public StringBuilder teste() {
-		
-		Tag tagRaiz = new Tag("DBModel", null, null);
-		tagRaiz.addChildTag(new Tag("backGround", null, tagRaiz));
-		tagRaiz.addChildTag(new Tag("tableList", null, tagRaiz.getChildTagByName("backGround")));
-		
-		return tagRaiz.genarateStringByThis();
-		
+		return XMLReader.read(xml);
 	}
 	
 }

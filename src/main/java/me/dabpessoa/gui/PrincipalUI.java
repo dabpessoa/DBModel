@@ -49,27 +49,16 @@ public class PrincipalUI implements ActionListener, RelacionamentoListener, Mous
     
     public void carregarModelo(Modelo modelo) {
 
+		if (modelo == null )return;
 
-    	
-//    	fundo.removeAll();
-//    	fundo.updateUI();
-//
-//    	for (int i = 0 ; i < xmlTablesUI.size() ; i++) {
-//
-//    		xmlTablesUI.get(i).setPrincipalUI(this);
-//
-//    		Point point = xmlTablesUI.get(i).getLocation();
-//
-//    		JPanel tablePanel = this.createTablePanel(point);
-//    		tablePanel.add(xmlTablesUI.get(i));
-//
-//    		this.setTableUI_ID(xmlTablesUI.get(i));
-//    		this.addTablePanelToMainPanel(tablePanel);
-//
-//    	}
+    	fundo.removeAll();
+    	fundo.updateUI();
 
-
-    	
+    	if (modelo.getTabelas() != null) {
+			for (Tabela tabela : modelo.getTabelas()) {
+				createAndAddNewTableUI(tabela);
+			}
+		}
     	
     }
     
@@ -209,7 +198,23 @@ public class PrincipalUI implements ActionListener, RelacionamentoListener, Mous
         frame.setVisible(true);
         
     }
-    
+
+	public TabelaUI createAndAddNewTableUI(Tabela tabela) {
+
+		JPanel tablePanel = createTablePanel(tabela);
+
+		TabelaUI tabelaUI = new TabelaUI(this);
+		tabelaUI.setTabela(tabela);
+
+		tablePanel.add(tabelaUI); // Setando o pai da TabelaUI.
+		listaTabelas.add(tabelaUI);
+
+		this.addTablePanelToMainPanel(tablePanel);
+
+		return tabelaUI;
+
+	}
+
     public TabelaUI createAndAddNewTableUI(Point point) {
         
     	JPanel tablePanel = createTablePanel(point);
@@ -231,7 +236,22 @@ public class PrincipalUI implements ActionListener, RelacionamentoListener, Mous
 	    tabelaUI.getTabela().setId(manager.getModelo().quantidadeTabelas()+1+"");
         listaTabelas.add(tabelaUI);
     }
-    
+
+	public JPanel createTablePanel(Tabela tabela) {
+
+		Point point = new Point(tabela.getModelo().getPosicaoX().intValue(), tabela.getModelo().getPosicaoY().intValue());
+
+		JPanel tablePanel = new JPanel();
+		tablePanel.setLayout(new GridLayout());
+		tablePanel.setSize(new Dimension(tabela.getModelo().getLargura().intValue(), tabela.getModelo().getAltura().intValue()));
+		tablePanel.setLocation(point);
+		tablePanel.setBackground(Color.WHITE);
+		tablePanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+
+		return tablePanel;
+
+	}
+
     public JPanel createTablePanel(Point point) {
     	
     	JPanel tablePanel = new JPanel();

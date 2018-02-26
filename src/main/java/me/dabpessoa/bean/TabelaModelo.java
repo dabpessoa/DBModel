@@ -8,6 +8,7 @@ public class TabelaModelo {
     private Double posicaoY;
 
     public TabelaModelo() {
+        this(null, null, null, null);
     }
 
     public TabelaModelo(Double largura, Double altura, Double posicaoX, Double posicaoY) {

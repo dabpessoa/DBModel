@@ -411,6 +411,10 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 		return tabela;
 	}
 
+	public void setTabela(Tabela tabela) {
+		this.tabela = tabela;
+	}
+
 	public TabelaUITitulo getTitulo() {
 		return titulo;
 	}

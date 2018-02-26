@@ -1,9 +1,12 @@
 package me.dabpessoa.bean;
 
+import me.dabpessoa.util.xml.XMLModel;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@XMLModel
 public class Modelo {
 
     private String nome;
