@@ -1,5 +1,7 @@
 package me.dabpessoa.gui;
 
+import me.dabpessoa.bean.Modelo;
+import me.dabpessoa.bean.Tabela;
 import me.dabpessoa.business.listeners.RelacionamentoListener;
 
 import javax.swing.*;
@@ -28,19 +30,20 @@ public class RelationshipUI extends javax.swing.JFrame implements ActionListener
 	private JComboBox comboPrimaryTable;
 	private JComboBox primaryTableCombo;
 	private JComboBox foreignTableCombo;
-	private List<TabelaUI> listaTabelas;
 	private RelacionamentoListener listener;
 	private JScrollPane scrollTable1;
 	private JScrollPane scrollTable2;
+
+	private Modelo modelo;
 	
 	private RelationshipUI() {
 		super();
 	}
 	
-	public static RelationshipUI show(List<TabelaUI> listaTabelas) {
+	public static RelationshipUI show(Modelo modelo) {
 		if (instance == null) {
 			instance = new RelationshipUI();
-			instance.setListaTabelasSingleton(listaTabelas);
+			instance.setListaTabelasSingleton(modelo);
 			instance.init();
 			instance.addWindowListener(instance);
 			instance.setLocationRelativeTo(null);
@@ -55,8 +58,8 @@ public class RelationshipUI extends javax.swing.JFrame implements ActionListener
 		initGUI();
 	}
 	
-	private void setListaTabelasSingleton(List<TabelaUI> listaTabelas) {
-		this.listaTabelas = listaTabelas;
+	private void setListaTabelasSingleton(Modelo modelo) {
+		this.modelo = modelo;
 	}
 	
 	public void setRelacionamentoListener(RelacionamentoListener listener) {
@@ -103,11 +106,12 @@ public class RelationshipUI extends javax.swing.JFrame implements ActionListener
 				foreingKeyTable.setText("Tabela com chave estrangeira:");
 				foreingKeyTable.setBounds(284, 42, 279, 14);
 			}
-			
+
+				List<Tabela> listaTabelas = modelo.getTabelas();
 				String[] tabelasNames = new String[listaTabelas.size()+1];
 				tabelasNames[0] = "";
 				for (int i = 0 ; i < listaTabelas.size() ; i++) {
-					tabelasNames[i+1] = listaTabelas.get(i).getTabela().getTitulo();
+					tabelasNames[i+1] = listaTabelas.get(i).getTitulo();
 				}
 			
 			{
@@ -243,11 +247,12 @@ public class RelationshipUI extends javax.swing.JFrame implements ActionListener
 	
 	public String[] getTipos1() {
 		String tipos[] = {};
+		List<Tabela> listaTabelas = modelo.getTabelas();
 		for (int i = 0 ; i < listaTabelas.size() ; i++) {
-			if (((String)comboPrimaryTable.getSelectedItem()).equalsIgnoreCase(listaTabelas.get(i).getTabela().getTitulo()) && listaTabelas.get(i).getTabela().getAtributos() != null) {
-				tipos = new String[listaTabelas.get(i).getTabela().getAtributos().size()];
+			if (((String)comboPrimaryTable.getSelectedItem()).equalsIgnoreCase(listaTabelas.get(i).getTitulo()) && listaTabelas.get(i).getAtributos() != null) {
+				tipos = new String[listaTabelas.get(i).getAtributos().size()];
 				for (int j = 0 ; j < tipos.length ; j++) {
-					tipos[j] = listaTabelas.get(i).getTabela().getAtributos().get(j).getNome();
+					tipos[j] = listaTabelas.get(i).getAtributos().get(j).getNome();
 				}
 			}
 		}
@@ -256,17 +261,26 @@ public class RelationshipUI extends javax.swing.JFrame implements ActionListener
 	
 	public String[] getTipos2() {
 		String tipos[] = {};
+		List<Tabela> listaTabelas = modelo.getTabelas();
 		for (int i = 0 ; i < listaTabelas.size() ; i++) {
-			if (((String)comboForeignTable.getSelectedItem()).equalsIgnoreCase(listaTabelas.get(i).getTabela().getTitulo()) && listaTabelas.get(i).getTabela().getAtributos() != null) {
-				tipos = new String[listaTabelas.get(i).getTabela().getAtributos().size()+2];
+			if (((String)comboForeignTable.getSelectedItem()).equalsIgnoreCase(listaTabelas.get(i).getTitulo()) && listaTabelas.get(i).getAtributos() != null) {
+				tipos = new String[listaTabelas.get(i).getAtributos().size()+2];
 				tipos[0] = "Inserir um atributo novo";
 				tipos[1] = "----------------";
 				for (int j = 2 ; j < tipos.length ; j++) {
-					tipos[j] = listaTabelas.get(i).getTabela().getAtributos().get(j-2).getNome();
+					tipos[j] = listaTabelas.get(i).getAtributos().get(j-2).getNome();
 				}
 			}
 		}
 		return tipos;
+	}
+
+	public Modelo getModelo() {
+		return modelo;
+	}
+
+	public void setModelo(Modelo modelo) {
+		this.modelo = modelo;
 	}
 
 	@Override

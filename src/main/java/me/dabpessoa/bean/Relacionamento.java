@@ -3,8 +3,8 @@ package me.dabpessoa.bean;
 public class Relacionamento {
 
 	private String nome;
-	private Tabela leftTable;
-	private Tabela rightTable;
+	private Tabela tabela1;
+	private Tabela tabela2;
 	private String cardinalidade;
 	
 	public Relacionamento() {}
@@ -25,22 +25,20 @@ public class Relacionamento {
 		return cardinalidade;
 	}
 
-	public void setLeftTable(Tabela leftTable) {
-		this.leftTable = leftTable;
+	public Tabela getTabela1() {
+		return tabela1;
 	}
 
-	public Tabela getLeftTable() {
-		return leftTable;
+	public void setTabela1(Tabela tabela1) {
+		this.tabela1 = tabela1;
 	}
 
-	public void setRightTable(Tabela rightTable) {
-		this.rightTable = rightTable;
+	public Tabela getTabela2() {
+		return tabela2;
 	}
 
-	public Tabela getRightTable() {
-		return rightTable;
+	public void setTabela2(Tabela tabela2) {
+		this.tabela2 = tabela2;
 	}
-	
-	
-	
+
 }

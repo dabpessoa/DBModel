@@ -86,10 +86,10 @@ public class DBModelXMLParser {
 			xml.append(r.getNome());
 			xml.append("</name>\n");
 			xml.append("\t\t\t\t<primary-table-name>");
-			xml.append(r.getLeftTable().getTitulo());
+			xml.append(r.getTabela1().getTitulo());
 			xml.append("</primary-table-name>\n");
 			xml.append("\t\t\t\t<foreing-table-name>");
-			xml.append(r.getRightTable().getTitulo());
+			xml.append(r.getTabela2().getTitulo());
 			xml.append("</foreing-table-name>\n");
 		}
 		if (modelo.quantidadeRelacionamentos() > 0) xml.append("\t\t</relacionamentos>\n");

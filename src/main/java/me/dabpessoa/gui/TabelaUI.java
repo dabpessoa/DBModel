@@ -171,7 +171,7 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 	                	JPanel panel = (JPanel) t.getParent().getParent();
 	                	panel.remove(0);
 	                	panel.updateUI();
-	                	principalUI.getListaTabelas().remove(t);
+	                	principalUI.getManager().removerTabela(t.getTabela());
 	                	
 	                	removerRelationships(t, panel);
 	                	
@@ -201,16 +201,16 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 		
 		int index = -1;
 		
-		while (((FundoUI)panel).getT1s().indexOf(t) != -1) {
-			index = ((FundoUI)panel).getT1s().indexOf(t);
-    		((FundoUI)panel).getT1s().remove(index);
-    		((FundoUI)panel).getT2s().remove(index);
-		}
-		while (((FundoUI)panel).getT2s().indexOf(t) != -1) {
-			index = ((FundoUI)panel).getT2s().indexOf(t);
-    		((FundoUI)panel).getT1s().remove(index);
-    		((FundoUI)panel).getT2s().remove(index);
-		}
+//		while (((FundoUI)panel).getT1s().indexOf(t) != -1) {
+//			index = ((FundoUI)panel).getT1s().indexOf(t);
+//    		((FundoUI)panel).getT1s().remove(index);
+//    		((FundoUI)panel).getT2s().remove(index);
+//		}
+//		while (((FundoUI)panel).getT2s().indexOf(t) != -1) {
+//			index = ((FundoUI)panel).getT2s().indexOf(t);
+//    		((FundoUI)panel).getT1s().remove(index);
+//    		((FundoUI)panel).getT2s().remove(index);
+//		}
 		
 	}
 

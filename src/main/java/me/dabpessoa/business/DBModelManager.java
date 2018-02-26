@@ -52,7 +52,7 @@ public class DBModelManager {
     }
 
     public void mostrarJanelaRelacionamento() {
-        RelationshipUI relationShip = RelationshipUI.show(principalUI.getListaTabelas());
+        RelationshipUI relationShip = RelationshipUI.show(modelo);
         relationShip.setRelacionamentoListener(principalUI);
     }
 

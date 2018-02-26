@@ -80,13 +80,13 @@ public class SQLFactory {
 				
 			Relacionamento r = listaRelacionamentos.get(i);
 			
-			List<Atributo> atribs1 = r.getLeftTable().getAtributos();
-			List<Atributo> atribs2 = r.getRightTable().getAtributos();
+			List<Atributo> atribs1 = r.getTabela1().getAtributos();
+			List<Atributo> atribs2 = r.getTabela2().getAtributos();
 			
 			for (int j = 0 ; j < atribs1.size() ; j++) {
 				RestricaoIntegridade fk = atribs1.get(j).getIntegritRestriction();
 				if ( fk != null ) {
-					codigoSQLGerado.append("ALTER TABLE "+r.getLeftTable().getTitulo()+" ADD CONSTRAINT FK_"+atribs1.get(j).getNome()+" FOREIGN KEY ("+atribs1.get(j).getNome()+") REFERENCES "+fk.getTabelaNomeFK()+" ("+fk.getAtributoFK()+");\n ");
+					codigoSQLGerado.append("ALTER TABLE "+r.getTabela1().getTitulo()+" ADD CONSTRAINT FK_"+atribs1.get(j).getNome()+" FOREIGN KEY ("+atribs1.get(j).getNome()+") REFERENCES "+fk.getTabelaNomeFK()+" ("+fk.getAtributoFK()+");\n ");
 				}
 				
 			}
@@ -94,7 +94,7 @@ public class SQLFactory {
 			for (int j = 0 ; j < atribs2.size() ; j++) {
 				RestricaoIntegridade fk = atribs2.get(j).getIntegritRestriction();
 				if ( fk != null ) {
-					codigoSQLGerado.append("ALTER TABLE "+r.getRightTable().getTitulo()+" ADD CONSTRAINT FK_"+atribs2.get(j).getNome()+" FOREIGN KEY ("+atribs2.get(j).getNome()+") REFERENCES "+fk.getTabelaNomeFK()+" ("+fk.getAtributoFK()+");\n ");
+					codigoSQLGerado.append("ALTER TABLE "+r.getTabela2().getTitulo()+" ADD CONSTRAINT FK_"+atribs2.get(j).getNome()+" FOREIGN KEY ("+atribs2.get(j).getNome()+") REFERENCES "+fk.getTabelaNomeFK()+" ("+fk.getAtributoFK()+");\n ");
 				}
 			}
 			

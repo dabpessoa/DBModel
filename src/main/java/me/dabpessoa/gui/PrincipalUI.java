@@ -21,15 +21,9 @@ import java.util.List;
 public class PrincipalUI implements ActionListener, RelacionamentoListener, MouseListener {
 	
 	private FundoUI fundo;
-	private List<TabelaUI> listaTabelas = new ArrayList<TabelaUI>();
 	private JScrollPane scrollPane;
 	private JFrame frame;
 	private DBModelManager manager;
-	
-	
-	public List<TabelaUI> getListaTabelas() {
-		return listaTabelas;
-	}
 	
 	public PrincipalUI(DBModelManager manager) {
 		this.manager = manager;
@@ -207,7 +201,6 @@ public class PrincipalUI implements ActionListener, RelacionamentoListener, Mous
 		tabelaUI.setTabela(tabela);
 
 		tablePanel.add(tabelaUI); // Setando o pai da TabelaUI.
-		listaTabelas.add(tabelaUI);
 
 		this.addTablePanelToMainPanel(tablePanel);
 
@@ -234,7 +227,6 @@ public class PrincipalUI implements ActionListener, RelacionamentoListener, Mous
     
     public void setTableUI_ID(TabelaUI tabelaUI) {
 	    tabelaUI.getTabela().setId(manager.getModelo().quantidadeTabelas()+1+"");
-        listaTabelas.add(tabelaUI);
     }
 
 	public JPanel createTablePanel(Tabela tabela) {
@@ -368,43 +360,45 @@ public class PrincipalUI implements ActionListener, RelacionamentoListener, Mous
 		
 		// IMPORTANTE, FALTA CONSIDERAR OS NOMES DOS ATRIBUTOS SELECIONADOS: String primaryAtributoName, String foreignAtributoName
 		
-		TabelaUI tabela1 = null;
-		TabelaUI tabela2 = null;
-		
-		for (int i = 0 ; i < listaTabelas.size() ; i++) {
-			if (listaTabelas.get(i).getTabela().getTitulo() == t1) {
-				tabela1 = listaTabelas.get(i);
-			} else if (listaTabelas.get(i).getTabela().getTitulo() == t2) {
-				tabela2 = listaTabelas.get(i);
+		Tabela tabela1 = null;
+		Tabela tabela2 = null;
+
+		List<Tabela> tabelas = getManager().getModelo().getTabelas();
+
+		for (int i = 0 ; i < tabelas.size() ; i++) {
+			if (tabelas.get(i).getTitulo() == t1) {
+				tabela1 = tabelas.get(i);
+			} else if (tabelas.get(i).getTitulo() == t2) {
+				tabela2 = tabelas.get(i);
 			}
 		}
 		
-		// J� tenho tudo que preciso, agora � s� desenhar!	
+		// Já tenho tudo que preciso, agora é só desenhar!
 		
-		Relacionamento rs = new Relacionamento();
-		rs.setNome(objectName);
-		rs.setLeftTable(tabela1.getTabela());
-		rs.setRightTable(tabela2.getTabela());
-		rs.setCardinalidade(cardinalidade);
+		Relacionamento relacionamento = new Relacionamento();
+		relacionamento.setNome(objectName);
+		relacionamento.setTabela1(tabela1);
+		relacionamento.setTabela2(tabela2);
+		relacionamento.setCardinalidade(cardinalidade);
 		
 		
 		
 		if (cardinalidade.equalsIgnoreCase("N:N")) {
 			
-			if (tabela1.getTabela().getChavesPrimaria().isEmpty() || tabela2.getTabela().getChavesPrimaria().isEmpty()) {
+			if (tabela1.getChavesPrimaria().isEmpty() || tabela2.getChavesPrimaria().isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Nas relações N:N é obrigatório que as duas tabelas tenham um atributo definido como chave primária");
 			} else {
 			
 				TabelaUI temp = this.createAndAddNewTableUI(new Point(0,0));
-				temp.setTitle(tabela1.getTabela().getTitulo().substring(0, 3)+"_"+tabela2.getTabela().getTitulo().subSequence(0, 3)+"_table");
+				temp.setTitle(tabela1.getTitulo().substring(0, 3)+"_"+tabela2.getTitulo().subSequence(0, 3)+"_table");
 				
 				List<Atributo> atribs = new ArrayList<Atributo>();
-				for (int i = 0 ; i < tabela1.getTabela().getChavesPrimaria().size() ; i++) {
-					Atributo atrib = tabela1.getTabela().getChavesPrimaria().get(i);
+				for (int i = 0 ; i < tabela1.getChavesPrimaria().size() ; i++) {
+					Atributo atrib = tabela1.getChavesPrimaria().get(i);
 					Atributo temp1 = new Atributo();
 					
 					RestricaoIntegridade fk = new RestricaoIntegridade();
-					fk.setTabelaNomeFK(tabela1.getTabela().getTitulo());
+					fk.setTabelaNomeFK(tabela1.getTitulo());
 					fk.setAtributoFK(atrib.getNome());
 					
 					temp1.setChavePrimaria(true);
@@ -416,12 +410,12 @@ public class PrincipalUI implements ActionListener, RelacionamentoListener, Mous
 					
 					atribs.add(temp1);
 				}
-				for (int i = 0 ; i < tabela2.getTabela().getChavesPrimaria().size() ; i++) {
-					Atributo atrib = tabela2.getTabela().getChavesPrimaria().get(i);
+				for (int i = 0 ; i < tabela2.getChavesPrimaria().size() ; i++) {
+					Atributo atrib = tabela2.getChavesPrimaria().get(i);
 					Atributo temp1 = new Atributo();					
 					
 					RestricaoIntegridade fk = new RestricaoIntegridade();
-					fk.setTabelaNomeFK(tabela2.getTabela().getTitulo());
+					fk.setTabelaNomeFK(tabela2.getTitulo());
 					fk.setAtributoFK(atrib.getNome());
 					
 					temp1.setChavePrimaria(true);
@@ -435,20 +429,12 @@ public class PrincipalUI implements ActionListener, RelacionamentoListener, Mous
 				}
 				
 				temp.setPrimaryKeys(atribs);
-				
-				fundo.setT1(tabela1);
-				fundo.setT2(temp);
-				fundo.addCardinalidade("1:N");
-				
-				fundo.setT1(temp);
-				fundo.setT2(tabela2);
-				fundo.addCardinalidade("N:1");
-				
-				rs = new Relacionamento();
-				rs.setNome(objectName);
-				rs.setLeftTable(tabela1.getTabela());
-				rs.setRightTable(temp.getTabela());
-				rs.setCardinalidade("1:N");
+
+				relacionamento = new Relacionamento();
+				relacionamento.setNome(objectName);
+				relacionamento.setTabela1(tabela1);
+				relacionamento.setTabela2(temp.getTabela());
+				relacionamento.setCardinalidade("1:N");
 				
 				temp.getParent().setSize(temp.getParent().getPreferredSize());
 				
@@ -456,18 +442,18 @@ public class PrincipalUI implements ActionListener, RelacionamentoListener, Mous
 			
 		} else if (cardinalidade.equalsIgnoreCase("N:1")) {
 			
-			if (tabela1.getTabela().getChavesPrimaria().isEmpty() || tabela2.getTabela().getChavesPrimaria().isEmpty()) {
+			if (tabela1.getChavesPrimaria().isEmpty() || tabela2.getChavesPrimaria().isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Para adicionar um relacionamento ao menos uma das tabelas deve conter um atributo definido como chave primária.");
 			} else {
 				
 				List<Atributo> atribs = new ArrayList<Atributo>();
-				for (int i = 0 ; i < tabela2.getTabela().getChavesPrimaria().size() ; i++) {
+				for (int i = 0 ; i < tabela2.getChavesPrimaria().size() ; i++) {
 					
-					Atributo atrib = tabela2.getTabela().getChavesPrimaria().get(i);
+					Atributo atrib = tabela2.getChavesPrimaria().get(i);
 					Atributo temp = new Atributo();
 					
 					RestricaoIntegridade fk = new RestricaoIntegridade();
-					fk.setTabelaNomeFK(tabela2.getTabela().getTitulo());
+					fk.setTabelaNomeFK(tabela2.getTitulo());
 					fk.setAtributoFK(atrib.getNome());
 										
 					temp.setChavePrimaria(false);
@@ -480,27 +466,22 @@ public class PrincipalUI implements ActionListener, RelacionamentoListener, Mous
 					atribs.add(temp);
 				}
 				
-				tabela1.setForeingKeys(atribs);
-				tabela1.getParent().setSize(tabela1.getParent().getPreferredSize());
-				
-				fundo.setT1(tabela1);
-				fundo.setT2(tabela2);
-				fundo.addCardinalidade(cardinalidade);
+
 			}
 			
 		} else if (cardinalidade.equalsIgnoreCase("1:N")) {
 			
-			if (tabela1.getTabela().getChavesPrimaria().isEmpty() || tabela2.getTabela().getChavesPrimaria().isEmpty()) {
+			if (tabela1.getChavesPrimaria().isEmpty() || tabela2.getChavesPrimaria().isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Para adicionar um relacionamento ao menos uma das tabelas deve conter um atributo definido como chave primária.");
 			} else {
 				
 				List<Atributo> atribs = new ArrayList<Atributo>();
-				for (int i = 0 ; i < tabela1.getTabela().getChavesPrimaria().size() ; i++) {
-					Atributo atrib = tabela1.getTabela().getChavesPrimaria().get(i);
+				for (int i = 0 ; i < tabela1.getChavesPrimaria().size() ; i++) {
+					Atributo atrib = tabela1.getChavesPrimaria().get(i);
 					Atributo temp1 = new Atributo();
 					
 					RestricaoIntegridade fk = new RestricaoIntegridade();
-					fk.setTabelaNomeFK(tabela1.getTabela().getTitulo());
+					fk.setTabelaNomeFK(tabela1.getTitulo());
 					fk.setAtributoFK(atrib.getNome());
 					
 					temp1.setChavePrimaria(false);
@@ -512,28 +493,23 @@ public class PrincipalUI implements ActionListener, RelacionamentoListener, Mous
 					
 					atribs.add(temp1);
 				}
-				tabela2.setForeingKeys(atribs);
-				tabela2.getParent().setSize(tabela2.getParent().getPreferredSize());
-				
-				fundo.setT1(tabela1);
-				fundo.setT2(tabela2);
-				fundo.addCardinalidade(cardinalidade);
+
 			}
 			
 		} else if (cardinalidade.equalsIgnoreCase("1:1")) {
 			
-			if (tabela1.getTabela().getChavesPrimaria().isEmpty() || tabela2.getTabela().getChavesPrimaria().isEmpty()) {
+			if (tabela1.getChavesPrimaria().isEmpty() || tabela2.getChavesPrimaria().isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Para adicionar um relacionamento ao menos uma das tabelas deve conter um atributo definido como chave primária.");
 			} else {
 				
 				List<Atributo> atribs = new ArrayList<Atributo>();
-				for (int i = 0 ; i < tabela1.getTabela().getChavesPrimaria().size() ; i++) {
+				for (int i = 0 ; i < tabela1.getChavesPrimaria().size() ; i++) {
 					
-					Atributo atrib = tabela1.getTabela().getChavesPrimaria().get(i);
+					Atributo atrib = tabela1.getChavesPrimaria().get(i);
 					Atributo temp1 = new Atributo();
 					
 					RestricaoIntegridade fk = new RestricaoIntegridade();
-					fk.setTabelaNomeFK(tabela1.getTabela().getTitulo());
+					fk.setTabelaNomeFK(tabela1.getTitulo());
 					fk.setAtributoFK(atrib.getNome());
 					
 					temp1.setChavePrimaria(false);
@@ -545,19 +521,13 @@ public class PrincipalUI implements ActionListener, RelacionamentoListener, Mous
 
 					atribs.add(temp1);
 				}
-				tabela2.setForeingKeys(atribs);
-				tabela2.getParent().setSize(tabela2.getParent().getPreferredSize());
-				
-				fundo.setT1(tabela1);
-				fundo.setT2(tabela2);
-				fundo.addCardinalidade(cardinalidade);
+
 			}
 			
 		}
-		
-		fundo.updateUI();
 
-		manager.adicionarRelacionamento(rs);
+		manager.adicionarRelacionamento(relacionamento);
+		fundo.updateUI();
 		
 	}
 
