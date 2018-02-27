@@ -2,7 +2,6 @@ package me.dabpessoa.gui;
 
 import me.dabpessoa.bean.Atributo;
 import me.dabpessoa.bean.Tabela;
-import me.dabpessoa.bean.TabelaModelo;
 import me.dabpessoa.business.DBModelManager;
 import me.dabpessoa.business.listeners.EditListener;
 import me.dabpessoa.gui.components.*;
@@ -36,33 +35,22 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 	*/
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
-		frame.getContentPane().add(new TabelaUI(new PrincipalUI(new DBModelManager())));
+		frame.getContentPane().add(new TabelaUI(new PrincipalUI(new DBModelManager()), new Tabela()));
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
 	}
 	
-	public TabelaUI(PrincipalUI principalUI) {
+	public TabelaUI(PrincipalUI principalUI, Tabela tabela) {
 		super();
 		this.principalUI = principalUI;
-		this.tabela = new Tabela();
-		setBackground(Color.WHITE);
+		this.tabela = tabela;
+		setBackground(tabela.getEstilo().getCorDeFundo());
 		initGUI();
 	}
 	
-	public TabelaUI() {this(null);}
-	
 	public void setPrincipalUI(PrincipalUI principalUI) {
 		this.principalUI = principalUI;
-	}
-
-	public void atualizarObjetoTabela() {
-		if (tabela == null) tabela = new Tabela();
-		if (tabela.getModelo() == null) tabela.setModelo(new TabelaModelo());
-		tabela.getModelo().setAltura((double)getParent().getHeight());
-		tabela.getModelo().setLargura((double)getParent().getWidth());
-		tabela.getModelo().setPosicaoX(getParent().getLocation().getX());
-		tabela.getModelo().setPosicaoY(getParent().getLocation().getY());
 	}
 
 	public void initGUI() {
@@ -113,8 +101,8 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 			
 			corpo.add(corpoPK, gb);
 			
-			gb.weightx = Tabela.LARGURA_PADRAO;
-			gb.weighty = Tabela.ALTURA_PADRAO;
+			gb.weightx = tabela.getModelo().getLargura();
+			gb.weighty = tabela.getModelo().getAltura();
 			gb.insets = is;
 			gb.gridx = 0;
 			gb.gridy = 1;

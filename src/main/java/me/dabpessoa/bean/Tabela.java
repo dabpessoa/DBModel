@@ -5,8 +5,6 @@ import java.util.List;
 
 public class Tabela {
 
-	public static final int LARGURA_PADRAO = 100;
-	public static final int ALTURA_PADRAO = 100;
 	public static final int QUANTIDADE_COLUNAS = 6;
 
 	private String id;
@@ -15,6 +13,7 @@ public class Tabela {
 	private boolean selecionada;
 
 	private TabelaModelo modelo;
+	private TabelaEstilo estilo;
 	
 	public Tabela() {
 		this(null, null, null);
@@ -34,7 +33,14 @@ public class Tabela {
 		this.atributos = atributos;
 		this.modelo = tabelaModelo;
 	}
-	
+
+	public void carregarModeloEEstilosPadroes() {
+		if(getModelo() == null) modelo = new TabelaModelo();
+		if(getEstilo() == null) estilo = new TabelaEstilo();
+		modelo.carregarValoresPadroes();
+		estilo.carregarEstilosPadroes();
+	}
+
 	public List<Atributo> getChavesPrimaria() {
 		List<Atributo> chaves = new ArrayList<Atributo>();
 		for (int i = 0 ; i < this.atributos.size() ; i++) {
@@ -100,6 +106,14 @@ public class Tabela {
 
 	public void setSelecionada(boolean selecionada) {
 		this.selecionada = selecionada;
+	}
+
+	public TabelaEstilo getEstilo() {
+		return estilo;
+	}
+
+	public void setEstilo(TabelaEstilo estilo) {
+		this.estilo = estilo;
 	}
 
 	@Override

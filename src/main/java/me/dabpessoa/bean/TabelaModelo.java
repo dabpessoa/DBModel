@@ -7,15 +7,27 @@ public class TabelaModelo {
     private Double posicaoX;
     private Double posicaoY;
 
-    public TabelaModelo() {
-        this(null, null, null, null);
-    }
+    public TabelaModelo() {}
 
     public TabelaModelo(Double largura, Double altura, Double posicaoX, Double posicaoY) {
         this.largura = largura;
         this.altura = altura;
         this.posicaoX = posicaoX;
         this.posicaoY = posicaoY;
+    }
+
+    public void zerarValores() {
+        largura = null;
+        altura = null;
+        posicaoX = null;
+        posicaoY = null;
+    }
+
+    public void carregarValoresPadroes() {
+        largura = ValoresPadroes.largura;
+        altura = ValoresPadroes.altura;
+        posicaoX = ValoresPadroes.posicaoX;
+        posicaoY = ValoresPadroes.posicaoY;
     }
 
     public Double getLargura() {
@@ -48,6 +60,22 @@ public class TabelaModelo {
 
     public void setPosicaoY(Double posicaoY) {
         this.posicaoY = posicaoY;
+    }
+
+    public static class ValoresPadroes {
+
+        public static Double largura;
+        public static Double altura;
+        public static Double posicaoX;
+        public static Double posicaoY;
+
+        static {
+            largura = 100d;
+            altura = 100d;
+            posicaoX = 0d;
+            posicaoY = 0d;
+        }
+
     }
 
 }

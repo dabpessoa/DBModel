@@ -197,8 +197,7 @@ public class PrincipalUI implements ActionListener, RelacionamentoListener, Mous
 
 		JPanel tablePanel = createTablePanel(tabela);
 
-		TabelaUI tabelaUI = new TabelaUI(this);
-		tabelaUI.setTabela(tabela);
+		TabelaUI tabelaUI = new TabelaUI(this, tabela);
 
 		tablePanel.add(tabelaUI); // Setando o pai da TabelaUI.
 
@@ -209,16 +208,20 @@ public class PrincipalUI implements ActionListener, RelacionamentoListener, Mous
 	}
 
     public TabelaUI createAndAddNewTableUI(Point point) {
-        
-    	JPanel tablePanel = createTablePanel(point);
-	    
-	    TabelaUI tabelaUI = new TabelaUI(this);
+
+		Tabela tabela = new Tabela();
+		tabela.carregarModeloEEstilosPadroes();
+		tabela.getModelo().setPosicaoX(point.getX());
+		tabela.getModelo().setPosicaoY(point.getY());
+
+    	TabelaUI tabelaUI = new TabelaUI(this, tabela);
+
+    	JPanel tablePanel = createTablePanel(tabela);
 	    tablePanel.add(tabelaUI); // Setando o pai da TabelaUI.
-		tabelaUI.atualizarObjetoTabela(); // Atualizando tamanhos dos modelo da tabela de acordo com tamanhos do container pai.
-		manager.adicionarTabela(tabelaUI.getTabela()); // Adicionando tabela na listagem principal.
+
+		manager.adicionarTabela(tabela); // Adicionando tabela na listagem principal.
 	    
 	    this.setTableUI_ID(tabelaUI);
-        
         this.addTablePanelToMainPanel(tablePanel);
         
         return tabelaUI;
@@ -234,29 +237,16 @@ public class PrincipalUI implements ActionListener, RelacionamentoListener, Mous
 		Point point = new Point(tabela.getModelo().getPosicaoX().intValue(), tabela.getModelo().getPosicaoY().intValue());
 
 		JPanel tablePanel = new JPanel();
+
 		tablePanel.setLayout(new GridLayout());
 		tablePanel.setSize(new Dimension(tabela.getModelo().getLargura().intValue(), tabela.getModelo().getAltura().intValue()));
 		tablePanel.setLocation(point);
-		tablePanel.setBackground(Color.WHITE);
-		tablePanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+		tablePanel.setBackground(tabela.getEstilo().getCorDeFundo());
+		tablePanel.setBorder(BorderFactory.createLineBorder(tabela.getEstilo().getCorDaBorda(), tabela.getEstilo().getEspessuraBorda()));
 
 		return tablePanel;
 
 	}
-
-    public JPanel createTablePanel(Point point) {
-    	
-    	JPanel tablePanel = new JPanel();
-    	
-    	tablePanel.setLayout(new GridLayout());
-    	tablePanel.setSize(new Dimension(Tabela.LARGURA_PADRAO, Tabela.ALTURA_PADRAO));
-    	tablePanel.setLocation(point);
-    	tablePanel.setBackground(Color.WHITE);
-    	tablePanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-    	
-    	return tablePanel;
-    	
-    }
     
     public void addTablePanelToMainPanel(JPanel tablePanel) {
     	fundo.add(tablePanel);
@@ -317,8 +307,8 @@ public class PrincipalUI implements ActionListener, RelacionamentoListener, Mous
 
 	public Point calculateVisibleCenterCoordinate() {
 
-		Double x = (scrollPane.getVisibleRect().getWidth() / 2) - (Tabela.LARGURA_PADRAO / 2);
-		Double y = (scrollPane.getVisibleRect().getHeight() / 2) - (Tabela.ALTURA_PADRAO / 2);
+		Double x = (scrollPane.getVisibleRect().getWidth() / 2) - (TabelaModelo.ValoresPadroes.largura / 2);
+		Double y = (scrollPane.getVisibleRect().getHeight() / 2) - (TabelaModelo.ValoresPadroes.altura / 2);
 
 		return new Point(x.intValue(), y.intValue());
 
