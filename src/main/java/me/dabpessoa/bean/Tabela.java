@@ -12,6 +12,7 @@ public class Tabela {
 	private String id;
 	private String titulo;
 	private List<Atributo> atributos;
+	private boolean selecionada;
 
 	private TabelaModelo modelo;
 	
@@ -91,6 +92,14 @@ public class Tabela {
 
 	public void setModelo(TabelaModelo modelo) {
 		this.modelo = modelo;
+	}
+
+	public boolean isSelecionada() {
+		return selecionada;
+	}
+
+	public void setSelecionada(boolean selecionada) {
+		this.selecionada = selecionada;
 	}
 
 	@Override

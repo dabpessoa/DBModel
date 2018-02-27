@@ -43,7 +43,7 @@ public class RelationshipUI extends javax.swing.JFrame implements ActionListener
 	public static RelationshipUI show(Modelo modelo) {
 		if (instance == null) {
 			instance = new RelationshipUI();
-			instance.setListaTabelasSingleton(modelo);
+			instance.setModelo(modelo);
 			instance.init();
 			instance.addWindowListener(instance);
 			instance.setLocationRelativeTo(null);
@@ -58,10 +58,6 @@ public class RelationshipUI extends javax.swing.JFrame implements ActionListener
 		initGUI();
 	}
 	
-	private void setListaTabelasSingleton(Modelo modelo) {
-		this.modelo = modelo;
-	}
-	
 	public void setRelacionamentoListener(RelacionamentoListener listener) {
 		this.listener = listener;
 	}
@@ -70,13 +66,11 @@ public class RelationshipUI extends javax.swing.JFrame implements ActionListener
 	* Auto-generated main method to display this JFrame
 	*/
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				RelationshipUI inst = new RelationshipUI();
-				inst.setLocationRelativeTo(null);
-				inst.setVisible(true);
-			}
-		});
+		SwingUtilities.invokeLater(() -> {
+            RelationshipUI inst = new RelationshipUI();
+            inst.setLocationRelativeTo(null);
+            inst.setVisible(true);
+        });
 	}
 	
 	private void initGUI() {

@@ -155,9 +155,11 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 	public void mouseClicked(MouseEvent e) {
 
 		if (e.getClickCount() == 2) {
+
 			TableEditUI tableEdit = TableEditUI.getInstance(tabela);
 			tableEdit.setListener(this);
-		} else if (e.getButton() == MouseEvent.BUTTON3) {
+
+		} else if (e.getButton() == MouseEvent.BUTTON3) { // Botão direito do mouse (abre poupup menu).
 			
 			final TabelaUI t = this;
 			
@@ -182,8 +184,7 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 					
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						// TODO Auto-generated method stub
-						
+
 						TableEditUI tableEdit = TableEditUI.getInstance(tabela);
 						tableEdit.setListener(t);
 						
@@ -194,7 +195,32 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 	            menu.add(cliqueme);
 	  
 	            menu.show(this, e.getX(), e.getY());
+		} else {
+
+			if (getTabela().isSelecionada()) {
+				removerSelecaoTabela();
+			} else {
+				// Só houve um click e a tabela deve ser selecionada.
+				selecionarTabela();
+			}
+
 		}
+
+	}
+
+	public void selecionarTabela() {
+		((JPanel)getParent()).setBorder(BorderFactory.createLineBorder(Color.ORANGE, 2));
+		getTabela().setSelecionada(true);
+	}
+
+	public void removerSelecaoTabela() {
+		// Remover seleção da tabela.
+		((JPanel)getParent()).setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+		getTabela().setSelecionada(false);
+	}
+
+	public void highlightTabela() {
+		((JPanel)getParent()).setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 	}
 	
 	public void removerRelationships(TabelaUI t, JPanel panel) {
@@ -216,12 +242,16 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		((JPanel)getParent()).setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+		highlightTabela();
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		((JPanel)getParent()).setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+		if (getTabela().isSelecionada()) {
+			selecionarTabela();
+		} else {
+			removerSelecaoTabela();
+		}
 	}
 
 	@Override
@@ -438,8 +468,7 @@ public class TabelaUI extends JPanel implements MouseListener, MouseMotionListen
 		int mouseOffsetY = Math.abs((int) (mousePressedPosition.getY() - getParent().getY()));
 
 		getParent().setLocation(e.getX() + mouseOffsetX, e.getY() + mouseOffsetY);
-		FundoUI temp = (FundoUI) getParent().getParent();
-		temp.updateUI();
+		principalUI.getFundo().updateUI();
 
 	}
 
